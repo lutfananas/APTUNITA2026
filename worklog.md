@@ -12,3 +12,14 @@ Work Log:
 Stage Summary:
 - Repo: https://github.com/lutfananas/APTUNITA2026
 - 2 file terpush: README.md, index.html (commit 7ca8697)
+---
+Task ID: 2
+Agent: main
+Task: Update repo APTUNITA2026 dengan zip v2 + tampilkan README
+
+Work Log:
+- Ekstrak APTUNITA2026 (2).zip: index.html baru (232 KB), kampus-unita.jpg baru (269 KB), README.md tidak berubah
+- Commit 4a7307e dan push ke main
+
+Stage Summary:
+- Repo terupdate: https://github.com/lutfananas/APTUNITA2026 (3 file)
