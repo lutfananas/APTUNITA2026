@@ -1,159 +1,310 @@
 'use client'
 
-/** Tab Ringkasan: hero foto kampus + progres keseluruhan + rincian per kriteria. */
+/**
+ * Tab Ringkasan — replika desain asli:
+ * tiles statistik + matriks kriteria × sasaran + kartu hologram SP + hbars + jadwal berikutnya.
+ */
 import React, { useMemo } from 'react'
 import { useStore } from './store'
-import { INS, KR, LKPT, NASKAH, UNCOUNTED } from '@/lib/accreditation'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { CalendarRange, ClipboardList, ScrollText, Table2, TrendingUp } from 'lucide-react'
+import { INS, KR, LKPT, krKode, krColor, KR_HEX } from '@/lib/accreditation'
+
+const SASARAN = ['Masukan', 'Proses', 'Luaran', 'Dampak']
+const krHex = (k: string) => KR_HEX[Math.max(0, krColor(k))] || 'var(--accent)'
 
 export function SummaryTab({ onGo }: { onGo: (t: 'indikator' | 'lkpt' | 'naskah' | 'jadwal') => void }) {
-  const { data, user } = useStore()
+  const { data } = useStore()
 
-  const stats = useMemo(() => {
-    // LED: indikator dianggap "tergarap" bila status ≠ Belum mulai, "final" bila Final
-    const perKr = KR.map(([nama]) => {
-      const items = INS.filter(i => i.kriteria === nama)
-      const garap = items.filter(i => (data.isian[i.kode]?.status || 'Belum mulai') !== 'Belum mulai').length
-      const final = items.filter(i => data.isian[i.kode]?.status === 'Final').length
-      return { nama, total: items.length, garap, final }
-    })
-    const ledGarap = perKr.reduce((a, b) => a + b.garap, 0)
-    const ledFinal = perKr.reduce((a, b) => a + b.final, 0)
-    // LKPT
-    const lkTotal = LKPT.length
-    const lkLengkap = LKPT.filter(([id]) => data.lkpt[id]?.status === 'Lengkap').length
+  const s = useMemo(() => {
+    const simYa = INS.filter(i => data.isian[i.kode]?.sim_u === 'ya')
+    const simTidak = INS.filter(i => data.isian[i.kode]?.sim_u === 'tidak')
+    const simNa = INS.length - simYa.length - simTidak.length
+    const skor = Math.round((simYa.length / INS.length) * 100)
+    const final = INS.filter(i => data.isian[i.kode]?.status === 'Final')
+    const bukti = INS.filter(i => (data.isian[i.kode]?.bukti || []).some(b => b.url))
+    const lkLengkap = LKPT.filter(([id]) => data.lkpt[id]?.status === 'Lengkap')
     const lkTerisi = LKPT.map(([id]) => Number(data.lkpt[id]?.terisi ?? 0) || 0)
-    const lkAvg = lkTerisi.length ? Math.round(lkTerisi.reduce((a, b) => a + b, 0) / lkTotal) : 0
-    // Naskah halaman
-    let hal = 0
-    for (const [id] of NASKAH) if (!UNCOUNTED.includes(id)) hal += Number(data.naskah[id]?.halaman ?? 0) || 0
-    // Jadwal
+    const lkAvg = lkTerisi.length ? Math.round(lkTerisi.reduce((a, b) => a + b, 0) / LKPT.length) : 0
+    const sp = INS.filter(i => i.sp_u)
+    const spOk = sp.filter(i => data.isian[i.kode]?.sim_u === 'ya').length
+    // stack per kriteria (final)
+    const finalPerKr = KR.map(([nama]) => INS.filter(i => i.kriteria === nama && data.isian[i.kode]?.status === 'Final').length)
+    // matrix kriteria × sasaran
+    const mx = KR.map(([nama]) =>
+      SASARAN.map(sa => {
+        const items = INS.filter(i => i.kriteria === nama && i.sasaran === sa)
+        const fin = items.filter(i => data.isian[i.kode]?.status === 'Final').length
+        return { n: items.length, fin, pct: items.length ? Math.round((fin / items.length) * 100) : -1 }
+      }),
+    )
+    // status narasi per kriteria
+    const stKr = KR.map(([nama]) => {
+      const items = INS.filter(i => i.kriteria === nama)
+      const f = items.filter(i => data.isian[i.kode]?.status === 'Final').length
+      const r = items.filter(i => data.isian[i.kode]?.status === 'Review').length
+      const d = items.filter(i => data.isian[i.kode]?.status === 'Draf').length
+      return { nama, total: items.length, f, r, d, b: items.length - f - r - d }
+    })
+    // butir belum final per PIC
+    const unit: Record<string, { n: number; krs: string[] }> = {}
+    for (const i of INS) {
+      if (data.isian[i.kode]?.status === 'Final') continue
+      const pic = (data.isian[i.kode]?.pic || '').trim() || '—'
+      const e = (unit[pic] ||= { n: 0, krs: [] })
+      e.n++
+      if (!e.krs.includes(krKode(i.kriteria))) e.krs.push(krKode(i.kriteria))
+    }
+    const unitArr = Object.entries(unit)
+      .map(([u, v]) => ({ u, ...v }))
+      .sort((a, b) => b.n - a.n)
+      .slice(0, 8)
+    // jadwal berikutnya
     const jAll = Object.values(data.jadwal)
-    const jSelesai = jAll.filter(j => j.status === 'Selesai').length
-    const jBerjalan = jAll.filter(j => j.status === 'Berjalan')
-    // Simulasi Unggul
-    const simYa = INS.filter(i => data.isian[i.kode]?.sim_u === 'ya').length
-    const simTidak = INS.filter(i => data.isian[i.kode]?.sim_u === 'tidak').length
-    return { perKr, ledGarap, ledFinal, lkTotal, lkLengkap, lkAvg, hal, jAll, jSelesai, jBerjalan, simYa, simTidak }
+    const nextJ = jAll
+      .filter(j => j.mulai && j.status !== 'Selesai')
+      .sort((a, b) => a.mulai.localeCompare(b.mulai))[0]
+    return { simYa, simTidak, simNa, skor, final: final.length, bukti: bukti.length, lkLengkap: lkLengkap.length, lkAvg, sp, spOk, finalPerKr, mx, stKr, unitArr, nextJ }
   }, [data])
 
-  const pct = (n: number, d: number) => (d ? Math.round((n / d) * 100) : 0)
-  const ledPct = pct(stats.ledGarap, INS.length)
-  const nextJ = [...stats.jAll].filter(j => j.mulai && j.status !== 'Selesai').sort((a, b) => a.mulai.localeCompare(b.mulai))[0]
+  const tileIcon = (d: string) => (
+    <span className="ic" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d={d} />
+      </svg>
+    </span>
+  )
 
   return (
-    <div className="space-y-6">
-      {/* HERO */}
-      <section className="relative overflow-hidden rounded-2xl text-white" style={{ background: '#0a1638' }}>
-        <div className="absolute inset-0" style={{ backgroundImage: 'url(/kampus-unita.jpg)', backgroundSize: 'cover', backgroundPosition: '72% 42%' }} />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg,rgba(6,14,40,.97) 0%,rgba(8,20,58,.92) 38%,rgba(10,26,72,.55) 68%,rgba(10,26,72,.15) 100%)' }} />
-        <div className="relative z-10 p-6 lg:p-10 flex flex-col lg:flex-row items-start lg:items-center gap-8">
-          {/* Ring progres */}
-          <div className="relative h-36 w-36 shrink-0 rounded-full flex items-center justify-center" style={{ background: `conic-gradient(#fbbf24 ${ledPct * 3.6}deg,rgba(255,255,255,.12) 0deg)` }} role="img" aria-label={`Progres LED ${ledPct} persen`}>
-            <div className="h-[116px] w-[116px] rounded-full flex flex-col items-center justify-center" style={{ background: '#0a1638' }}>
-              <b className="text-3xl font-bold text-amber-300">{ledPct}%</b>
-              <span className="text-[10px] uppercase tracking-widest text-white/60">LED tergarap</span>
-            </div>
+    <section role="tabpanel">
+      {/* ===== TILES ===== */}
+      <div className="tiles">
+        <div className="dcard tile" style={{ ['--tc' as string]: 'var(--gold)' }}>
+          <div className="top">
+            <div className="lbl">Simulasi skor Unggul · ambang 80%</div>
+            {tileIcon('M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z')}
           </div>
-          <div className="min-w-0">
-            <p className="text-[11px] tracking-[.2em] uppercase text-amber-300/90 font-medium mb-2">IAPT 4.1 · PTS Akademik · {user?.role === 'admin' ? 'Akses penuh admin' : 'Peran ' + (user?.label || '')}</p>
-            <h1 className="text-2xl lg:text-3xl font-bold leading-snug mb-2">Lembar Kerja Akreditasi APT UNITA 2026</h1>
-            <p className="text-sm text-white/70 max-w-xl leading-relaxed">
-              65 sub-indikator LED · 24 tabel LKPT · 14 bagian naskah · 18 tahap jadwal. Semua isian tim kini tersimpan
-              di <b className="text-white">database terpusat yang aman</b> — setiap perubahan terekam nama penyimpannya.
-            </p>
-            <div className="flex flex-wrap gap-2 mt-4">
-              <Badge className="bg-emerald-400/15 text-emerald-300 border border-emerald-300/30">Simulasi Unggul: {stats.simYa} memenuhi</Badge>
-              {stats.simTidak > 0 && <Badge className="bg-rose-400/15 text-rose-300 border border-rose-300/30">{stats.simTidak} belum memenuhi</Badge>}
-              {nextJ && <Badge className="bg-white/10 text-white/85 border border-white/20">Tahap berikutnya: {nextJ.tahap.slice(0, 44)}{nextJ.tahap.length > 44 ? '…' : ''}</Badge>}
-            </div>
+          <div className="big">{s.skor}%</div>
+          <div className="meter">
+            <i className="grow" style={{ width: `${s.skor}%` }} />
+            <b title="Ambang 80%" />
+          </div>
+          <div className="foot">
+            {s.simYa.length} memenuhi · {s.simTidak.length} belum · {s.simNa} belum dinilai
           </div>
         </div>
-      </section>
 
-      {/* Statistik cepat */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <button onClick={() => onGo('indikator')} className="text-left rounded-xl border border-slate-200 bg-white p-4 hover:border-[#16307d]/40 hover:shadow-sm transition group">
-          <div className="flex items-center justify-between">
-            <ClipboardList className="h-5 w-5 text-[#16307d]" />
-            <span className="text-[11px] text-slate-400 group-hover:text-[#16307d]">buka →</span>
+        <div className="dcard tile" style={{ ['--tc' as string]: 'var(--k2)' }}>
+          <div className="top">
+            <div className="lbl">Narasi LED final</div>
+            {tileIcon('M6 3h9l4 4v14H6z M9 12h7 M9 16h7 M9 8h3')}
           </div>
-          <p className="mt-3 text-2xl font-bold text-slate-900">
-            {stats.ledGarap}
-            <span className="text-sm font-medium text-slate-400"> / {INS.length}</span>
-          </p>
-          <p className="text-xs text-slate-500 mt-0.5">Sub-indikator LED digarap · {stats.ledFinal} Final</p>
-        </button>
-        <button onClick={() => onGo('lkpt')} className="text-left rounded-xl border border-slate-200 bg-white p-4 hover:border-[#16307d]/40 hover:shadow-sm transition group">
-          <div className="flex items-center justify-between">
-            <Table2 className="h-5 w-5 text-[#16307d]" />
-            <span className="text-[11px] text-slate-400 group-hover:text-[#16307d]">buka →</span>
+          <div className="big">
+            {s.final}
+            <small>/ {INS.length}</small>
           </div>
-          <p className="mt-3 text-2xl font-bold text-slate-900">
-            {stats.lkLengkap}
-            <span className="text-sm font-medium text-slate-400"> / {stats.lkTotal}</span>
-          </p>
-          <p className="text-xs text-slate-500 mt-0.5">Tabel LKPT Lengkap · rata-rata terisi {stats.lkAvg}%</p>
-        </button>
-        <button onClick={() => onGo('naskah')} className="text-left rounded-xl border border-slate-200 bg-white p-4 hover:border-[#16307d]/40 hover:shadow-sm transition group">
-          <div className="flex items-center justify-between">
-            <ScrollText className="h-5 w-5 text-[#16307d]" />
-            <span className="text-[11px] text-slate-400 group-hover:text-[#16307d]">buka →</span>
+          <div className="stack">
+            {s.finalPerKr.map((n, ix) => (
+              <i key={ix} style={{ flex: Math.max(n, 0.001), background: KR_HEX[ix] }} title={`${KR[ix][1]}: ${n} final`} />
+            ))}
           </div>
-          <p className="mt-3 text-2xl font-bold text-slate-900">
-            {stats.hal}
-            <span className="text-sm font-medium text-slate-400"> / 300</span>
-          </p>
-          <p className="text-xs text-slate-500 mt-0.5">Halaman naskah LED terpakai</p>
-        </button>
-        <button onClick={() => onGo('jadwal')} className="text-left rounded-xl border border-slate-200 bg-white p-4 hover:border-[#16307d]/40 hover:shadow-sm transition group">
-          <div className="flex items-center justify-between">
-            <CalendarRange className="h-5 w-5 text-[#16307d]" />
-            <span className="text-[11px] text-slate-400 group-hover:text-[#16307d]">buka →</span>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-slate-900">
-            {stats.jSelesai}
-            <span className="text-sm font-medium text-slate-400"> / {stats.jAll.length}</span>
-          </p>
-          <p className="text-xs text-slate-500 mt-0.5">Tahap jadwal selesai · {stats.jBerjalan.length} berjalan</p>
-        </button>
-      </section>
-
-      {/* Per kriteria */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 lg:p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="h-4.5 w-4.5 h-5 w-5 text-[#16307d]" />
-          <h2 className="font-semibold text-slate-900">Progres per kriteria (K.1 – K.4)</h2>
+          <div className="foot">terbagi dari {KR.length} kriteria — klik tab Indikator LED untuk mengisi</div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
-          {stats.perKr.map(k => {
-            const p = pct(k.garap, k.total)
-            return (
-              <div key={k.nama}>
-                <div className="flex items-center justify-between text-[13px] mb-1.5">
-                  <span className="font-medium text-slate-700">{k.nama}</span>
-                  <span className="text-slate-500">
-                    {k.garap}/{k.total} digarap · <b className="text-emerald-700">{k.final} final</b>
+
+        <div className="dcard tile" style={{ ['--tc' as string]: 'var(--k3)' }}>
+          <div className="top">
+            <div className="lbl">Butir dengan link bukti</div>
+            {tileIcon('M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1 M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1')}
+          </div>
+          <div className="big">
+            {s.bukti}
+            <small>/ {INS.length}</small>
+          </div>
+          <div className="meter">
+            <i className="grow" style={{ width: `${Math.round((s.bukti / INS.length) * 100)}%` }} />
+          </div>
+          <div className="foot">dokumen pendukung yang tercatat di database</div>
+        </div>
+
+        <div className="dcard tile" style={{ ['--tc' as string]: 'var(--k4)' }}>
+          <div className="top">
+            <div className="lbl">Tabel LKPT lengkap</div>
+            {tileIcon('M3 4h18v16H3z M3 10h18 M9 4v16')}
+          </div>
+          <div className="big">
+            {s.lkLengkap}
+            <small>/ {LKPT.length}</small>
+          </div>
+          <div className="meter">
+            <i className="grow" style={{ width: `${Math.round((s.lkLengkap / LKPT.length) * 100)}%` }} />
+          </div>
+          <div className="foot">rata-rata keterisian {s.lkAvg}% — kolaboratif seluruh tim</div>
+        </div>
+      </div>
+
+      {/* ===== MATRIX + SP ===== */}
+      <div className="g2">
+        <div className="dcard">
+          <h2>Peta kesiapan kriteria × sasaran mutu</h2>
+          <p className="hint">Persentase sub-indikator yang narasinya berstatus final.</p>
+          <div className="mx">
+            <span className="h" />
+            {SASARAN.map(sa => (
+              <span key={sa} className="h">
+                {sa}
+              </span>
+            ))}
+            {s.mx.map((row, ix) => (
+              <React.Fragment key={ix}>
+                <div className="r" style={{ ['--kc' as string]: KR_HEX[ix] }}>
+                  {KR[ix][0]}
+                  <em>{KR[ix][1]}</em>
+                </div>
+                {row.map((c, jx) => (
+                  <div
+                    key={jx}
+                    className={`c${c.pct < 0 ? ' none' : ''}`}
+                    style={c.pct >= 0 ? { background: `color-mix(in srgb, ${KR_HEX[ix]} ${8 + c.pct * 0.72}%, var(--panel))` } : undefined}
+                    title={c.pct >= 0 ? `${c.fin}/${c.n} final` : 'Tidak ada butir'}
+                  >
+                    <span className="p num">{c.pct < 0 ? '—' : `${c.pct}%`}</span>
+                    <span style={{ color: 'var(--muted)', fontSize: 11 }}>{c.pct < 0 ? '' : `${c.fin}/${c.n}`}</span>
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        <div className="dcard">
+          <h2>Syarat perlu Unggul</h2>
+          <p className="hint">
+            Butir-butir ini wajib terpenuhi semua. Satu saja gagal, status Unggul gugur berapa pun skor totalnya. Status
+            diambil dari isian simulasi di tab Indikator LED.
+          </p>
+          <div className="spg">
+            {s.sp.map((i, n) => {
+              const v = data.isian[i.kode]?.sim_u
+              return (
+                <button
+                  key={i.kode}
+                  className="spc"
+                  data-v={v === 'ya' ? 'ya' : v === 'tidak' ? 'tidak' : undefined}
+                  style={{ ['--n' as string]: n }}
+                  onClick={() => onGo('indikator')}
+                  title={`Buka sub-indikator ${String(i.kode).padStart(2, '0')}`}
+                >
+                  <span className="sheen" aria-hidden="true" />
+                  <span className="top">
+                    <span className="code">{String(i.kode).padStart(2, '0')}</span>
+                    <span className="k">
+                      {krKode(i.kriteria)} {i.kriteria}
+                    </span>
                   </span>
+                  <span className="n">{i.nama}</span>
+                  <span className="st">
+                    <span className={`pill ${v === 'ya' ? 'ok' : v === 'tidak' ? 'bad' : ''}`}>{v === 'ya' ? 'Memenuhi' : v === 'tidak' ? 'Belum' : 'Belum dinilai'}</span>
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+          <div className="legend">
+            <span>
+              <span className="sq" style={{ background: 'var(--ok)' }} /> memenuhi ({s.spOk}/{s.sp.length})
+            </span>
+            <span>
+              <span className="sq" style={{ background: 'var(--bad)' }} /> belum
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== HBARS ===== */}
+      <div className="g2">
+        <div className="dcard">
+          <h2>Status narasi per kriteria</h2>
+          <div className="hb">
+            {s.stKr.map((k, ix) => (
+              <div key={k.nama} className="i" style={{ ['--kc' as string]: KR_HEX[ix] }}>
+                <div>
+                  {krKode(k.nama)} {k.nama}
+                  <em>
+                    {k.f} final · {k.r} review · {k.d} draf
+                  </em>
                 </div>
-                <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-[#16307d]" style={{ width: `${p}%` }} />
+                <div>
+                  <div className="stack">
+                    <i style={{ flex: Math.max(k.f, 0.001), background: 'var(--s3)' }} title={`Final ${k.f}`} />
+                    <i style={{ flex: Math.max(k.r, 0.001), background: 'var(--s2)' }} title={`Review ${k.r}`} />
+                    <i style={{ flex: Math.max(k.d, 0.001), background: 'var(--s1)' }} title={`Draf ${k.d}`} />
+                    <i style={{ flex: Math.max(k.b, 0.001), background: 'var(--s0)' }} title={`Belum mulai ${k.b}`} />
+                  </div>
                 </div>
+                <span className="v">
+                  {k.f}/{k.total}
+                </span>
               </div>
-            )
-          })}
+            ))}
+          </div>
+          <div className="legend">
+            <span>
+              <span className="sq" style={{ background: 'var(--s3)' }} /> Final
+            </span>
+            <span>
+              <span className="sq" style={{ background: 'var(--s2)' }} /> Review
+            </span>
+            <span>
+              <span className="sq" style={{ background: 'var(--s1)' }} /> Draf
+            </span>
+            <span>
+              <span className="sq" style={{ background: 'var(--s0)' }} /> Belum mulai
+            </span>
+          </div>
         </div>
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Button size="sm" onClick={() => onGo('indikator')} className="bg-[#16307d] hover:bg-[#0f2464] text-white gap-1.5">
-            <ClipboardList className="h-3.5 w-3.5" /> Isi indikator LED
-          </Button>
-          <Button size="sm" variant="outline" onClick={() => onGo('lkpt')} className="gap-1.5">
-            <Table2 className="h-3.5 w-3.5" /> Isi tabel LKPT
-          </Button>
+
+        <div className="dcard">
+          <h2>Butir belum final per unit</h2>
+          <p className="hint">Dikelompokkan dari kolom PIC yang diisi tim. Isi kolom PIC agar pembagian kerja terlihat.</p>
+          {s.unitArr.length === 0 ? (
+            <div className="empty">Semua butir final — luar biasa!</div>
+          ) : (
+            <div className="hb">
+              {s.unitArr.map(u => (
+                <div key={u.u} className="i">
+                  <div>
+                    {u.u}
+                    <em>{u.krs.join(' · ')}</em>
+                  </div>
+                  <div>
+                    <div className="meter" style={{ height: 6 }}>
+                      <i className="grow" style={{ width: `${(u.n / Math.max(1, s.unitArr[0].n)) * 100}%` }} />
+                    </div>
+                  </div>
+                  <span className="v">{u.n}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      </section>
-    </div>
+      </div>
+
+      {/* ===== JADWAL BERIKUTNYA ===== */}
+      <div className="dcard">
+        <h2>Tahap jadwal berikutnya</h2>
+        {s.nextJ ? (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+            <b>{s.nextJ.tahap}</b>
+            <span className="mono" style={{ color: 'var(--muted)', fontSize: 12 }}>
+              {s.nextJ.mulai} → {s.nextJ.selesai}
+            </span>
+            <span className={`pill ${s.nextJ.status === 'Berjalan' ? 'ok' : 'na'}`}>{s.nextJ.status}</span>
+            <button className="btn" style={{ marginLeft: 'auto' }} onClick={() => onGo('jadwal')}>
+              Lihat jadwal lengkap
+            </button>
+          </div>
+        ) : (
+          <p className="hint">Belum ada tahap berjalan — lihat tab Jadwal.</p>
+        )}
+      </div>
+    </section>
   )
 }

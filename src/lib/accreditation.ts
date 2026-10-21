@@ -34,6 +34,31 @@ export const KRITERIA_LIST = KR.map(k => k[0])
 
 export const JADWAL_STATUS = ['Rencana', 'Berjalan', 'Selesai']
 
+/** Kode tampilan kriteria: "Budaya Mutu" -> "K.1" */
+export const krKode = (kriteria: string) => (KR.find(x => x[0] === kriteria) || [])[1] || ''
+/** Warna kriteria K.1–K.6 (urutan sama dengan KR) */
+export const krColor = (kriteria: string) => KR.findIndex(x => x[0] === kriteria)
+export const KR_HEX = ['#1f3c94', '#0f6f8f', '#6a3fb5', '#b8572c', '#9a7410', '#2f7a3a']
+
+/**
+ * Pemilik akun per kriteria — dipakai pesan popup larangan:
+ * "Bagian ini diisi oleh akun <owner>."
+ */
+export const OWNER: Record<string, string> = {
+  'Budaya Mutu': 'ppmk1',
+  'Relevansi Pendidikan': 'ppmk21',
+  'Relevansi Penelitian': 'ppmk22',
+  'Relevansi PkM': 'ppmk23',
+  Akuntabilitas: 'ppmk3',
+  'Diferensiasi Misi': 'ppmk4',
+}
+
+/** Konteks percobaan akses yang ditolak — menentukan isi popup. */
+export type DenyCtx =
+  | { kind: 'isian'; kode: string; kr: string }
+  | { kind: 'naskah'; id: string; nama: string }
+  | { kind: 'admin'; nama: string }
+
 export interface SessionLike {
   username: string
   role: string

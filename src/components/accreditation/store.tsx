@@ -5,7 +5,7 @@
  * dan fungsi simpan (POST /api/save) dengan pelacakan dirty.
  */
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { INS as INS_LOCAL, NK_KR as NK_KR_LOCAL } from '@/lib/accreditation'
+import { INS as INS_LOCAL, NK_KR as NK_KR_LOCAL, type DenyCtx } from '@/lib/accreditation'
 
 export interface SessionUser {
   username: string
@@ -94,6 +94,14 @@ interface Ctx {
   login: (u: string, p: string) => Promise<{ ok: boolean; error?: string }>
   logout: () => Promise<void>
   canWrite: (category: string, itemKey: string) => boolean
+  /** Popup larangan: konteks percobaan ubah yang ditolak (null = tertutup). */
+  deny: DenyCtx | null
+  showDenied: (ctx: DenyCtx) => void
+  closeDenied: () => void
+  /** Filter kriteria diminta dari luar (tombol "Ke butir K.x saya"). */
+  krFocus: string | null
+  requestKrFocus: (kr: string) => void
+  clearKrFocus: () => void
 }
 
 const StoreCtx = createContext<Ctx | null>(null)
@@ -110,6 +118,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
+  const [deny, setDeny] = useState<DenyCtx | null>(null)
+  const [krFocus, setKrFocus] = useState<string | null>(null)
+
+  const showDenied = useCallback((ctx: DenyCtx) => setDeny(ctx), [])
+  const closeDenied = useCallback(() => setDeny(null), [])
+  const requestKrFocus = useCallback((kr: string) => setKrFocus(kr), [])
+  const clearKrFocus = useCallback(() => setKrFocus(null), [])
 
   const showToast = useCallback((t: string) => {
     setToast(t)
@@ -199,7 +214,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             if (category === 'isian') next.isian[itemKey] = stored
             else if (category === 'lkpt') next.lkpt[itemKey] = stored
             else if (category === 'naskah') next.naskah[itemKey] = stored
-            else if (category === 'jadwal') next.jadwal[itemKey] = stored as JadwalItem
+            else if (category === 'jadwal') next.jadwal[itemKey] = stored as unknown as JadwalItem
             else if (category === 'profil') next.profil[itemKey === 'tim' ? 'tim' : 'identitas'] = stored
             return next
           })
@@ -233,8 +248,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo(
-    () => ({ user, data, loading, saving, toast, showToast, reload, save, login, logout, canWrite }),
-    [user, data, loading, saving, toast, showToast, reload, save, login, logout, canWrite],
+    () => ({ user, data, loading, saving, toast, showToast, reload, save, login, logout, canWrite, deny, showDenied, closeDenied, krFocus, requestKrFocus, clearKrFocus }),
+    [user, data, loading, saving, toast, showToast, reload, save, login, logout, canWrite, deny, showDenied, closeDenied, krFocus, requestKrFocus, clearKrFocus],
   )
   return <StoreCtx.Provider value={value}>{children}</StoreCtx.Provider>
 }

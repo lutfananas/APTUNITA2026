@@ -1,22 +1,21 @@
 'use client'
 
-/** Tab Jadwal: tabel tahapan penyusunan + linimasa. Hanya admin dapat mengubah. */
+/**
+ * Tab Jadwal — tabel tahapan (.tw) + linimasa gantt (.gt) gaya asli.
+ * Hanya admin dapat mengubah; akun lain melihat dengan SHIELD larangan.
+ */
 import React, { useMemo, useState } from 'react'
 import { useStore } from './store'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { CalendarRange, Plus, Trash2 } from 'lucide-react'
-import { SaveBar, statusTone } from './ui-bits'
 import { JADWAL_STATUS } from '@/lib/accreditation'
+import { Shield } from './ui-bits'
+import { Check, Loader2, Plus, Trash2 } from 'lucide-react'
 
-const TONE_BG: Record<string, string> = {
-  success: 'bg-emerald-500',
-  warning: 'bg-amber-500',
-  secondary: 'bg-slate-400',
-  destructive: 'bg-rose-500',
-  default: 'bg-[#16307d]',
+const DENY_JADWAL = { kind: 'admin', nama: 'jadwal penyusunan' } as const
+
+const BAR: Record<string, string> = {
+  Selesai: 'var(--ok)',
+  Berjalan: 'var(--warn)',
+  Rencana: 'var(--s2)',
 }
 
 export function ScheduleTab() {
@@ -60,38 +59,48 @@ export function ScheduleTab() {
     } else showToast(j.error || 'Gagal menghapus')
   }
 
-  // Linimasa
+  // Gantt
   const withDates = rows.filter(j => j.mulai && j.selesai)
   const min = withDates.length ? Math.min(...withDates.map(j => new Date(j.mulai + 'T00:00:00').getTime())) : 0
   const max = withDates.length ? Math.max(...withDates.map(j => new Date(j.selesai + 'T00:00:00').getTime())) : 0
   const span = max - min || 1
   const X = (t: number) => ((t - min) / span) * 100
+  const months = useMemo(() => {
+    if (!withDates.length) return []
+    const out: { label: string; x: number }[] = []
+    const d = new Date(min)
+    d.setDate(1)
+    while (d.getTime() <= max) {
+      const x = X(d.getTime())
+      if (x >= 0 && x <= 100) out.push({ label: d.toLocaleDateString('id-ID', { month: 'short' }) + (d.getMonth() === 0 ? ' ' + String(d.getFullYear()).slice(2) : ''), x })
+      d.setMonth(d.getMonth() + 1)
+    }
+    return out
+  }, [min, max])
+
+  const todayX = Date.now() >= min && Date.now() <= max ? X(Date.now()) : null
 
   return (
-    <div className="space-y-5">
-      <section className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
-        <div className="p-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 className="flex items-center gap-2 font-bold text-slate-900"><CalendarRange className="h-5 w-5 text-[#16307d]" />Jadwal penyusunan</h2>
-            <p className="text-xs text-slate-500 mt-1">Tahapan persiapan akreditasi — {rows.length} tahap {rw ? '' : '· hanya admin yang dapat mengubah'}</p>
+    <section role="tabpanel">
+      <article className="formcard">
+        <div className="fhead" style={{ ['--kc' as string]: 'var(--accent)' }}>
+          <span className="code">Penyusunan akreditasi · {rows.length} tahap</span>
+          <h2>Jadwal penyusunan</h2>
+          <div className="tags">
+            {!rw && <span className="pill lock">Hanya lihat · diisi oleh admin</span>}
           </div>
-          {rw && (
-            <Button size="sm" onClick={addTahap} disabled={adding} className="bg-[#16307d] hover:bg-[#0f2464] text-white gap-1">
-              <Plus className="h-3.5 w-3.5" /> Tambah tahap
-            </Button>
-          )}
         </div>
 
-        {/* Tabel */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-[12.5px] min-w-[760px]">
+        {/* Tabel tahapan */}
+        <div className="tw">
+          <table style={{ minWidth: 760 }}>
             <thead>
-              <tr className="bg-slate-50 text-left text-slate-500">
-                <th className="px-4 py-2.5 font-medium min-w-64">Tahap</th>
-                <th className="px-3 py-2.5 font-medium">Mulai</th>
-                <th className="px-3 py-2.5 font-medium">Selesai</th>
-                <th className="px-3 py-2.5 font-medium">Status</th>
-                <th className="px-3 py-2.5 font-medium">Aksi</th>
+              <tr>
+                <th style={{ minWidth: 260 }}>Tahap</th>
+                <th>Mulai</th>
+                <th>Selesai</th>
+                <th>Status</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -100,45 +109,81 @@ export function ScheduleTab() {
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-6 text-center text-slate-400">Belum ada tahap.</td>
+                  <td colSpan={5}>
+                    <div className="empty">Belum ada tahap.{rw ? ' Klik "Tambah tahap".' : ''}</div>
+                  </td>
                 </tr>
               )}
             </tbody>
           </table>
+          {!rw && <Shield ctx={DENY_JADWAL} />}
         </div>
-      </section>
+
+        <div className="savebar" style={{ position: 'static' }}>
+          {rw ? (
+            <button type="button" className="btn pri" onClick={addTahap} disabled={adding}>
+              <Plus className="h-4 w-4" /> Tambah tahap
+            </button>
+          ) : (
+            <span className="pill lock">Hanya admin dapat mengubah jadwal</span>
+          )}
+        </div>
+      </article>
 
       {/* Linimasa */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <h3 className="font-semibold text-slate-900 mb-1">Linimasa</h3>
-        <p className="text-xs text-slate-500 mb-4">Muncul untuk tahap yang sudah memiliki tanggal mulai dan selesai.</p>
+      <article className="dcard">
+        <h3>Linimasa</h3>
+        <p className="hint">Muncul untuk tahap yang sudah memiliki tanggal mulai dan selesai.</p>
         {withDates.length === 0 ? (
-          <p className="text-sm text-slate-400 py-4 text-center">Belum ada tahap dengan tanggal lengkap.</p>
+          <div className="empty">Belum ada tahap dengan tanggal lengkap.</div>
         ) : (
-          <div className="space-y-2">
+          <div className="gt">
+            <div className="gr months-row" style={{ gridTemplateColumns: 'minmax(150px,260px) 1fr', borderTop: 'none' }}>
+              <span />
+              <div className="months">
+                {months.map((m, i) => (
+                  <span key={i} style={{ left: `${m.x}%` }}>
+                    {m.label}
+                  </span>
+                ))}
+                {months.map((m, i) => (
+                  <i key={`g${i}`} className="grid" style={{ left: `${m.x}%` }} />
+                ))}
+              </div>
+            </div>
             {withDates.map(j => {
               const t1 = new Date(j.mulai + 'T00:00:00').getTime()
               const t2 = new Date(j.selesai + 'T00:00:00').getTime()
-              const tone = statusTone(j.status)
               return (
-                <div key={j.id} className="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[260px_minmax(0,1fr)_120px] items-center gap-x-3 gap-y-0.5">
-                  <span className="text-[12px] text-slate-700 truncate" title={j.tahap}>{j.tahap}</span>
-                  <span className="relative h-4 rounded-full bg-slate-100 overflow-hidden block">
+                <div key={j.id} className="gr">
+                  <div className="gl">
+                    {j.tahap}
+                    <em>
+                      {j.mulai.slice(8, 10)}/{j.mulai.slice(5, 7)} – {j.selesai.slice(8, 10)}/{j.selesai.slice(5, 7)}/{j.selesai.slice(0, 4)}
+                    </em>
+                  </div>
+                  <div className="tr">
                     <span
-                      className={`absolute inset-y-0 rounded-full opacity-85 ${TONE_BG[tone]}`}
-                      style={{ left: `${X(t1)}%`, width: `${Math.max(1.5, X(t2) - X(t1))}%` }}
+                      className="bx"
+                      style={{ left: `${X(t1)}%`, width: `${Math.max(1.5, X(t2) - X(t1))}%`, background: BAR[j.status] || 'var(--s2)' }}
+                      title={`${j.tahap} · ${j.status}`}
                     />
-                  </span>
-                  <span className="text-[10.5px] text-slate-400 tabular-nums text-right whitespace-nowrap">
-                    {j.mulai.slice(8, 10)}/{j.mulai.slice(5, 7)} – {j.selesai.slice(8, 10)}/{j.selesai.slice(5, 7)}/{j.selesai.slice(0, 4)}
-                  </span>
+                  </div>
                 </div>
               )
             })}
+            {todayX !== null && (
+              <div className="gr" style={{ borderTop: 'none' }}>
+                <span />
+                <div className="tr">
+                  <span className="today" style={{ left: `${todayX}%` }} title="Hari ini" />
+                </div>
+              </div>
+            )}
           </div>
         )}
-      </section>
-    </div>
+      </article>
+    </section>
   )
 }
 
@@ -146,50 +191,79 @@ function JadwalRow({ j, rw, onDelete }: { j: { id: string; tahap: string; mulai:
   const { save } = useStore()
   const [d, setD] = useState({ tahap: j.tahap || '', mulai: j.mulai || '', selesai: j.selesai || '', status: j.status || 'Rencana' })
   const [dirty, setDirty] = useState(false)
+  const [busy, setBusy] = useState(false)
   const [confirm, setConfirm] = useState(false)
-  const mut = (p: Partial<typeof d>) => { setD(prev => ({ ...prev, ...p })); setDirty(true) }
+  const mut = (p: Partial<typeof d>) => {
+    if (!rw) return
+    setD(prev => ({ ...prev, ...p }))
+    setDirty(true)
+  }
 
   const doSave = async () => {
     if (!d.tahap.trim()) return false
     if (d.mulai && d.selesai && d.selesai < d.mulai) return false
-    return await save('jadwal', j.id, { tahap: d.tahap.trim(), mulai: d.mulai, selesai: d.selesai, status: d.status })
+    setBusy(true)
+    const ok = await save('jadwal', j.id, { tahap: d.tahap.trim(), mulai: d.mulai, selesai: d.selesai, status: d.status })
+    setBusy(false)
+    if (ok) setDirty(false)
+    return ok
   }
 
   return (
-    <tr className="border-t border-slate-100 align-middle">
-      <td className="px-4 py-2">
-        <Input value={d.tahap} disabled={!rw} aria-label="Tahap" placeholder="Nama tahap" className="h-8 text-[12.5px]" onChange={e => mut({ tahap: e.target.value })} />
+    <tr>
+      <td>
+        <input type="text" value={d.tahap} disabled={!rw} aria-label="Tahap" placeholder="Nama tahap" onChange={e => mut({ tahap: e.target.value })} />
       </td>
-      <td className="px-3 py-2">
-        <Input type="date" value={d.mulai} disabled={!rw} aria-label="Mulai" className="h-8 text-[12.5px]" onChange={e => mut({ mulai: e.target.value })} />
+      <td>
+        <input type="date" value={d.mulai} disabled={!rw} aria-label="Mulai" onChange={e => mut({ mulai: e.target.value })} />
       </td>
-      <td className="px-3 py-2">
-        <Input type="date" value={d.selesai} disabled={!rw} aria-label="Selesai" className="h-8 text-[12.5px]" onChange={e => mut({ selesai: e.target.value })} />
+      <td>
+        <input type="date" value={d.selesai} disabled={!rw} aria-label="Selesai" onChange={e => mut({ selesai: e.target.value })} />
       </td>
-      <td className="px-3 py-2">
-        <Select value={d.status} onValueChange={v => mut({ status: v })} disabled={!rw}>
-          <SelectTrigger className="h-8 text-[12.5px] bg-white w-32" aria-label="Status tahap"><SelectValue /></SelectTrigger>
-          <SelectContent>{JADWAL_STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
-        </Select>
+      <td>
+        <select value={d.status} disabled={!rw} aria-label="Status tahap" onChange={e => mut({ status: e.target.value })} style={{ minWidth: 110 }}>
+          {JADWAL_STATUS.map(s => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
       </td>
-      <td className="px-3 py-2">
-        <div className="flex items-center gap-2">
-          <SaveBar path={`jadwal/${j.id}`} dirty={dirty} onDirtyChange={setDirty} onSave={doSave} storedAt={j.diubah_pada} storedBy={j.diubah_oleh} canEdit={rw} compact />
+      <td style={{ whiteSpace: 'nowrap' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          {rw ? (
+            <>
+              <button type="button" className="btn pri" style={{ padding: '5px 12px', fontSize: 12.5 }} onClick={doSave} disabled={busy || !dirty} title="Simpan tahap ini">
+                {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                Simpan
+              </button>
+              {j.diubah_oleh && (
+                <span style={{ fontSize: 11, color: 'var(--muted)' }} title={j.diubah_pada ? new Date(j.diubah_pada).toLocaleString('id-ID') : ''}>
+                  oleh {j.diubah_oleh}
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="pill lock">terkunci</span>
+          )}
           {rw && (
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="sm"
-              className={`gap-1 shrink-0 ${confirm ? 'text-rose-600 font-semibold' : 'text-slate-400 hover:text-rose-600'}`}
+              className="btn danger"
+              style={{ padding: '5px 10px', fontSize: 12 }}
               onClick={() => {
-                if (!confirm) { setConfirm(true); setTimeout(() => setConfirm(false), 3000); return }
+                if (!confirm) {
+                  setConfirm(true)
+                  setTimeout(() => setConfirm(false), 3000)
+                  return
+                }
                 onDelete()
               }}
               aria-label="Hapus tahap"
             >
               <Trash2 className="h-3.5 w-3.5" />
               {confirm ? 'Yakin?' : ''}
-            </Button>
+            </button>
           )}
         </div>
       </td>

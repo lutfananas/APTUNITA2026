@@ -1,13 +1,13 @@
 'use client'
 
-/** Komponen kecil yang dipakai lintas tab: SaveBar, LinkEditor, pill status, meter. */
+/**
+ * Komponen kecil lintas tab dengan kelas desain asli:
+ * SaveBar (savebar), LinkEditor (links/lnk/chip), pill status, Shield larangan.
+ */
 import React from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
 import { Check, Loader2, Plus, X } from 'lucide-react'
 import { useStore } from './store'
+import type { DenyCtx } from '@/lib/accreditation'
 
 export const ST_OPTIONS = ['Belum mulai', 'Draf', 'Review', 'Final']
 export const ST_LKPT_OPTIONS = ['Belum mulai', 'Pengisian', 'Verifikasi', 'Lengkap', 'Tidak berlaku']
@@ -25,43 +25,55 @@ export const isUrl = (u?: string) => /^https?:\/\/\S+$/i.test(u || '')
 export const cleanLinks = (l?: { nama: string; url: string }[]) =>
   (l || []).map(x => ({ nama: (x.nama || '').trim(), url: (x.url || '').trim() })).filter(x => x.nama || x.url)
 
-export function statusTone(s?: string): 'default' | 'success' | 'warning' | 'destructive' | 'secondary' {
+export function statusTone(s?: string): 'ok' | 'bad' | 'na' | '' {
   switch (s) {
     case 'Final':
     case 'Lengkap':
     case 'Selesai':
-      return 'success'
-    case 'Review':
-    case 'Berjalan':
-    case 'Verifikasi':
-    case 'Pengisian':
-    case 'Draf':
-      return 'warning'
+      return 'ok'
     case 'Tidak berlaku':
-      return 'destructive'
+      return 'bad'
     default:
-      return 'secondary'
+      return 'na'
   }
 }
 
-const TONE_CLASS: Record<string, string> = {
-  success: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  warning: 'bg-amber-100 text-amber-800 border-amber-200',
-  destructive: 'bg-rose-100 text-rose-800 border-rose-200',
-  secondary: 'bg-slate-100 text-slate-600 border-slate-200',
-  default: 'bg-slate-100 text-slate-700 border-slate-200',
-}
-
-export function StatusPill({ s }: { s?: string }) {
-  const tone = statusTone(s)
+export function StatusPill({ s, glass }: { s?: string; glass?: boolean }) {
   return (
-    <Badge variant="outline" className={`text-[11px] font-medium ${TONE_CLASS[tone]}`}>
-      {s || 'Belum mulai'}
-    </Badge>
+    <span className={`pill ${statusTone(s)}${glass ? ' glass' : ''}`}>{s || 'Belum mulai'}</span>
   )
 }
 
-/** Bar simpan: tombol + status "Terakhir disimpan …" */
+/** Label field — dipakai di dalam wrapper .field atau .ask/.fill */
+export function FieldLabel({ children }: { children: React.ReactNode }) {
+  return <span>{children}</span>
+}
+
+export function FieldHint({ children }: { children: React.ReactNode }) {
+  return <small>{children}</small>
+}
+
+/**
+ * Perisai larangan: overlay transparan di atas area isian milik akun lain.
+ * Isian TETAP TERLIHAT, tetapi setiap klik memunculkan popup larangan.
+ */
+export function Shield({ ctx }: { ctx: DenyCtx }) {
+  const { showDenied } = useStore()
+  return (
+    <div
+      className="shield"
+      title="Terkunci untuk akun ini"
+      aria-hidden="true"
+      onClick={e => {
+        e.preventDefault()
+        e.stopPropagation()
+        showDenied(ctx)
+      }}
+    />
+  )
+}
+
+/** Bar simpan gaya asli: tombol pri + pesan status + info penyimpan terakhir. */
 export function SaveBar({
   path,
   dirty,
@@ -70,7 +82,6 @@ export function SaveBar({
   storedAt,
   storedBy,
   canEdit,
-  compact,
 }: {
   path: string
   dirty: boolean
@@ -79,7 +90,6 @@ export function SaveBar({
   storedAt?: string
   storedBy?: string
   canEdit: boolean
-  compact?: boolean
 }) {
   const { saving, showToast } = useStore()
   const busy = saving === path
@@ -97,25 +107,24 @@ export function SaveBar({
     }
   }
   return (
-    <div className="flex flex-wrap items-center gap-3 border-t bg-slate-50/70 px-4 py-3 rounded-b-xl">
+    <div className="savebar">
       {canEdit ? (
-        <Button onClick={doSave} disabled={busy || !dirty} size="sm" className="min-w-32 bg-[#16307d] hover:bg-[#0f2464] text-white">
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : dirty ? <Check className="h-4 w-4" /> : <Check className="h-4 w-4 opacity-40" />}
-          {busy ? 'Menyimpan…' : 'Simpan'}
-        </Button>
+        <button type="button" className="btn pri" onClick={doSave} disabled={busy || !dirty} style={!dirty ? { opacity: 0.45, cursor: 'not-allowed' } : undefined}>
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+          {busy ? 'Menyimpan…' : 'Simpan ke database'}
+        </button>
       ) : (
-        <Badge variant="outline" className="text-[11px] bg-slate-100 text-slate-500 border-slate-200">
-          Hanya lihat
-        </Badge>
+        <span className="pill lock">Hanya lihat · terkunci untuk akun ini</span>
       )}
-      <span className={`text-xs ${dirty ? 'font-medium text-amber-700' : 'text-slate-500'}`}>
-        {dirty ? 'Ada perubahan belum disimpan' : compact ? '' : fmt(storedAt)}
+      <span className="msg" data-s={dirty ? 'dirty' : undefined}>
+        {dirty ? 'Ada perubahan belum disimpan' : ''}
       </span>
+      <span className="who">{fmt(storedAt)}</span>
     </div>
   )
 }
 
-/** Editor daftar link bukti (nama + URL) dengan chip saran. Pembaruan immutable. */
+/** Editor daftar link bukti gaya asli (nama + URL + tombol hapus ikon) + chip saran. */
 export function LinkEditor({
   links,
   setLinks,
@@ -130,64 +139,46 @@ export function LinkEditor({
   const have = new Set(links.map(l => (l.nama || '').trim()))
   const patch = (i: number, p: Partial<{ nama: string; url: string }>) => setLinks(links.map((x, ix) => (ix === i ? { ...x, ...p } : x)))
   return (
-    <div className="space-y-2">
-      <div className="space-y-2">
-        {links.map((l, i) => (
-          <div key={i} className="flex flex-col sm:flex-row gap-2 items-stretch">
-            <Input
-              type="text"
-              placeholder="Nama dokumen"
-              aria-label="Nama dokumen bukti"
-              value={l.nama}
-              disabled={disabled}
-              className="sm:w-64"
-              onChange={e => patch(i, { nama: e.target.value })}
-            />
-            <Input
-              type="url"
-              placeholder="https://drive.google.com/…"
-              aria-label="Link bukti"
-              value={l.url}
-              disabled={disabled}
-              className="flex-1"
-              onChange={e => patch(i, { url: e.target.value.trim() })}
-            />
-            {!disabled && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label="Hapus link"
-                className="text-slate-400 hover:text-rose-600"
-                onClick={() => setLinks(links.filter((_, ix) => ix !== i))}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-            {isUrl(l.url) && (
-              <a href={l.url} target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center text-xs text-[#16307d] underline underline-offset-2 px-2">
-                Buka
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
+    <div className="links">
+      {links.map((l, i) => (
+        <div key={i} className="lnk">
+          <input
+            type="text"
+            placeholder="Nama dokumen"
+            aria-label="Nama dokumen bukti"
+            value={l.nama}
+            disabled={disabled}
+            onChange={e => patch(i, { nama: e.target.value })}
+          />
+          <input
+            type="url"
+            placeholder="https://drive.google.com/…"
+            aria-label="Link bukti"
+            value={l.url}
+            disabled={disabled}
+            onChange={e => patch(i, { url: e.target.value.trim() })}
+          />
+          {isUrl(l.url) ? (
+            <a className="openlink" style={{ width: 32, textAlign: 'center' }} href={l.url} target="_blank" rel="noopener noreferrer" title="Buka link">
+              ↗
+            </a>
+          ) : (
+            <button type="button" className="icon" aria-label="Hapus link" disabled={disabled} onClick={() => setLinks(links.filter((_, ix) => ix !== i))}>
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+      ))}
       {!disabled && (
-        <Button type="button" variant="outline" size="sm" className="gap-1" onClick={() => setLinks([...links, { nama: '', url: '' }])}>
+        <button type="button" className="btn ghost" onClick={() => setLinks([...links, { nama: '', url: '' }])}>
           <Plus className="h-3.5 w-3.5" /> Tambah link bukti
-        </Button>
+        </button>
       )}
       {saran.length > 0 && !disabled && (
-        <div className="flex flex-wrap items-center gap-1.5 pt-1">
-          <span className="text-xs text-slate-500 mr-1">Tambah dari daftar bukti yang disarankan:</span>
+        <div className="chips">
+          <span style={{ fontSize: 12, color: 'var(--muted)' }}>Saran bukti:</span>
           {saran.map(nm => (
-            <button
-              key={nm}
-              type="button"
-              disabled={have.has(nm)}
-              className={`text-[11px] px-2 py-1 rounded-full border transition ${have.has(nm) ? 'opacity-40 border-slate-200 text-slate-400' : 'border-[#16307d]/30 text-[#16307d] hover:bg-[#16307d]/5'}`}
-              onClick={() => setLinks([...links, { nama: nm, url: '' }])}
-            >
+            <button key={nm} type="button" className="chip" disabled={have.has(nm)} onClick={() => setLinks([...links, { nama: nm, url: '' }])}>
               + {nm}
             </button>
           ))}
@@ -196,14 +187,3 @@ export function LinkEditor({
     </div>
   )
 }
-
-/** Label field kecil konsisten. */
-export function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <span className="text-[13px] font-medium text-slate-700">{children}</span>
-}
-
-export function FieldHint({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11.5px] leading-relaxed text-slate-500">{children}</p>
-}
-
-export { Input, Textarea }
