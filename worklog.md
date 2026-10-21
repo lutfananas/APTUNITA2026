@@ -23,3 +23,16 @@ Work Log:
 
 Stage Summary:
 - Repo terupdate: https://github.com/lutfananas/APTUNITA2026 (3 file)
+---
+Task ID: 3
+Agent: main
+Task: Deploy APTUNITA2026 ke Cloudflare Pages (aptunita.pages.dev)
+
+Work Log:
+- Verifikasi token cfat_ (level akun), Account ID c3054da4734ad593886118b33f3a35a8
+- Buat project Pages "aptunita" via API (production branch main)
+- Deploy index.html + kampus-unita.jpg via wrangler 4.151.3
+
+Stage Summary:
+- Live: https://aptunita.pages.dev
+- Deployment ID: 9bd41716
