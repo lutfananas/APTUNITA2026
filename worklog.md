@@ -36,3 +36,19 @@ Work Log:
 Stage Summary:
 - Live: https://aptunita.pages.dev
 - Deployment ID: 9bd41716
+---
+Task ID: 4
+Agent: main
+Task: Konversi lembar kerja akreditasi statis menjadi aplikasi web fullstack dengan database
+
+Work Log:
+- Analisis index.html asli (65 INS, 24 LKPT, 14 NASKAH, akun, jadwal) -> ekstrak ke JSON via scripts/extract-data.js
+- Skema Prisma: User (bcrypt), Entry (category+itemKey+JSON), AuditLog
+- API: /api/auth/{login,logout,me}, /api/state, /api/save (izin server-side), /api/jadwal (admin)
+- UI Next.js: login, Ringkasan, Indikator LED, LKPT, Naskah, Profil, Jadwal
+- Verifikasi agent-browser: login, isi+simpan, reload persist, 403 izin lintas kriteria, admin, mobile
+
+Stage Summary:
+- Aplikasi live di preview, data tersimpan di SQLite via Prisma
+- 7 akun seed password unita2026 (bcrypt), 18 jadwal default
+- Audit log mencatat login/save/denied

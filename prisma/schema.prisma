@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Akun pengguna lembar kerja akreditasi.
+// Password disimpan sebagai hash bcrypt (TIDAK pernah plaintext).
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  role         String   @default("user") // "admin" | "user"
+  kriteria     String   @default("") // kriteria yang jadi tanggung jawab (untuk role "user")
+  label        String   @default("") // nama tampilan peran
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Penyimpanan isian fleksibel per kategori + kunci item.
+// category: "isian" (65 indikator LED) | "lkpt" (24 tabel) | "naskah" (14 bagian)
+//           | "profil" (identitas/tim) | "jadwal" (tahapan penyusunan)
+// itemKey: kode indikator (mis. "1"), id tabel (mis. "L01"), id naskah ("N01"),
+//          "identitas", "tim", atau id jadwal (mis. "j01")
+// data: payload JSON dari klien
+model Entry {
+  id        String   @id @default(cuid())
+  category  String
+  itemKey   String
+  data      String
+  updatedBy String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([category, itemKey])
+  @@index([category])
+}
+
+// Jejak audit: siapa mengubah apa dan kapan (keamanan & akuntabilitas).
+model AuditLog {
+  id        String   @id @default(cuid())
+  username  String
+  action    String // "login" | "save" | "delete" | "denied" | "logout"
+  path      String @default("")
+  detail    String @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
