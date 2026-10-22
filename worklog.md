@@ -193,3 +193,28 @@ Stage Summary:
 - Deliverable: download/Rapat-Persiapan-Akreditasi_UNITA-ButirUnggul-IAPT41-23Okt2026.pptx (20 MB, 18 slide) + .pdf (2,4 MB)
 - Struktur: cover -> angka kunci -> mekanisme penetapan -> 8 SPU (2 slide + 1 keputusan) -> 6 kriteria (butir/ambang/mekanisme/strategi) -> papan bukti LKPT-Naskah -> siklus kerja & pemilik akun -> roadmap Okt 2026-Jun 2027 -> strategi & keputusan rapat
 - Sumber HTML: download/slides/slide_01..18.html (bisa diedit lalu re-export)
+
+---
+Task ID: 10
+Agent: main
+Task: Revisi deck Rapat Persiapan Akreditasi — hapus istilah "gerbang", ganti istilah akademis/formal (indikator/butir/tonggak)
+
+Work Log:
+- Grep "gerbang" di download/slides: ditemukan di 13 slide HTML + slides_brief.json
+- slide_01: judul cover "Delapan Gerbang Menuju Unggul." -> "Delapan Indikator Menuju Unggul." (font 86px tetap, fit 2 baris)
+- slide_04: section header -> "Delapan Indikator Wajib — Syarat Perlu Unggul"
+- slide_05/06: judul -> "Indikator dari Budaya Mutu & Pendidikan" / "Indikator dari Akuntabilitas & Diferensiasi Misi"; counter header GERBANG -> INDIKATOR 1–4 / 5–8 DARI 8
+- slide_03: "Satu gerbang gagal" -> "Satu butir gagal = gagal Unggul" (visible + notes)
+- slide_09: "3 di antaranya indikator wajib (SPU)"
+- slide_17: badge FASE 3 "GERBANG UNGGAH" -> "TONGGAK UNGGAH" (panjang sama, badge aman)
+- slide_18: h1 -> "ia delapan indikator yang dipenuhi lebih awal." (font 39->34px, max-width 820->900px agar tetap 2 baris); kartu strategi 01 -> "Pemenuhan indikator mendahului skor"
+- 13 <title> tag + speaker notes (slide_02/05/17/18) ikut disesuaikan; slides_brief.json disinkronkan (11 titik)
+- Verifikasi grep ulang: 0 sisa "gerbang"
+- Re-export batch_html2pptx -> PPTX 20,3 MB (warning BOUNDS non-kritis bleed .glow, sama seperti sebelumnya)
+- Screenshot verifikasi slide 01/04/05/06/17/18: semua judul fit, tanpa overflow
+- LibreOffice -> PDF 2,5 MB (overwrite)
+
+Stage Summary:
+- Deliverable terbarui: download/Rapat-Persiapan-Akreditasi_UNITA-ButirUnggul-IAPT41-23Okt2026.pptx + .pdf
+- Seluruh deck kini memakai diksi akademis: "indikator" (judul/header), "butir" (aturan emas), "tonggak" (badge fase unggah)
+- Sumber HTML download/slides/slide_01..18.html konsisten dengan manifest slides_brief.json
