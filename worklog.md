@@ -96,3 +96,38 @@ Stage Summary:
 - Sistem izin per-akun (shield/popup) tidak berubah — basisnya kriteria akun, bukan kolom PIC
 - Data lama dengan key pic di DB diabaikan UI, tidak perlu migrasi
 
+---
+Task ID: 7
+Agent: slide-renderer
+Task: Render slide 7–11 deck "Membaca Permendiktisaintek No. 10 Tahun 2026" (slides[6:11], navy-emas institusional, bahasa Indonesia)
+
+Work Log:
+- slide_07.html: grid 2x3 enam kartu tindak lanjut bernomor mono emas (01–06) — tertib data PD Dikti, pemetaan status 9 prodi, tenggat Pasal 77, jalur aman, disiplin kelas, anggaran unggul
+- slide_08.html: split kiri fakta hukum Pasal 75(2)/73(8) + kanan papan statistik 65 butir LED dengan bar CSS 6 kriteria, 24 tabel LKPT, 8 butir Syarat Perlu Unggul, ambang 80%, ditutup 3 syarat kelulusan butir
+- slide_09.html: timeline horizontal 3 fase (Okt 2026–2027) dibangun murni flex/border/garis emas tanpa SVG, plus catatan kaki tenggat LAM 16 Juli 2027 (Pasal 113)
+- slide_10.html: grid 3x2 lima kartu peran berikon Material (Rektorat, LPM/PPM, Kaprodi, Operator PD Dikti, Tim Ad-hoc) + strip emas "setiap butir punya pemilik" (typo "produ" pada brief dikoreksi menjadi "prodi")
+- slide_11.html: penutup navy penuh dengan kampus-unita.jpg samar (luminosity blend) + kalimat inti Literata, tiga pilar tipis, dan footer dasar hukum BN 2026 No. 477
+
+Stage Summary:
+- 5 slide HTML 1280x720 tersimpan di /home/z/my-project/download/slides/ (slide_07–slide_11), palet/typografi global.css dipatuhi, tanpa aside notes, tanpa nomor halaman
+
+
+---
+Task ID: 8
+Agent: main
+Task: Analisis Permendiktisaintek 39/2025 + Perubahan 10/2026 dan buat bahan presentasi rapat persiapan akreditasi UNITA
+
+Work Log:
+- Baca lengkap 2 PDF: Permen 39/2025 (47 hal, teks via pypdf -> scripts/permen39_full.txt) dan Salinan Permen 10/2026 (17 hal, pindaian, dibaca per halaman sebagai gambar)
+- Identifikasi 26 butir perubahan (Pasal I angka 1-26, ditetapkan 14 Juli 2026, BN 477/2026, berlaku 16 Juli 2026)
+- Perubahan kunci: Pasal 77 (tenggat 2 th sejak MABA pertama + kesempatan perbaikan 6 bulan), 78 (perpanjangan BAN-PT/LAM berbasis PD Dikti, persetujuan Menteri), 79 (terakreditasi pertama boleh kejar unggul + safety net), 83A-C BARU (biaya akreditasi pertama prodi ditanggung Kementerian), 84 (BAN-PT nonstruktural di lingkungan Kementerian), 14 (PJJ izin khusus), 96(1)g/104(f1) (pemantauan data PD Dikti), 113 (LAM wajib BHP <= 16 Juli 2027)
+- AskUserQuestion: user pilih PDF ringkas + fokus dampak + tabel perbandingan + petakan aplikasi; remarks: jadikan PPT untuk presentasi besok (23 Okt 2026), sertakan dasar hukum & poin menuju unggul, menarik & tidak terkesan AI
+- Outline 11 slide; tulis global.css (navy tinta #14273F, emas #B8912F, kertas #F7F5F0; Literata + IBM Plex Sans/Mono) + slides_brief.json di download/slides/; kampus-unita.jpg disalin ke slides/
+- Fan-out 2 ppt-expert: slides[0:6] dan slides[6:11] -> 11 HTML 1280x720
+- Verifikasi visual 11/11 slide via screenshot (cover, tabel .cmp, key message navy, stats 65 LED, timeline flex, peran, penutup navy)
+- Export: batch_html2pptx.js -> Permendiktisaintek-10-2026_UNITA-23Okt2026.pptx (11 MB, warning bounds non-kritis di slide_06 berupa bleed dekoratif); LibreOffice -> PDF 781 KB
+
+Stage Summary:
+- Deliverable: download/Permendiktisaintek-10-2026_UNITA-23Okt2026.pptx + .pdf (11 slide, Indonesia, institusional navy-emas, foto kampus)
+- Sumber slide HTML: download/slides/slide_01..11.html (bisa diedit lalu re-export)
+- Temuan inti untuk UNITA: data PD Dikti jadi dasar perpanjangan status; biaya akreditasi pertama prodi gratis; jalur aman 6 bulan & keberatan peringkat; biaya unggul tetap RAB PT
