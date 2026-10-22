@@ -131,3 +131,65 @@ Stage Summary:
 - Deliverable: download/Permendiktisaintek-10-2026_UNITA-23Okt2026.pptx + .pdf (11 slide, Indonesia, institusional navy-emas, foto kampus)
 - Sumber slide HTML: download/slides/slide_01..11.html (bisa diedit lalu re-export)
 - Temuan inti untuk UNITA: data PD Dikti jadi dasar perpanjangan status; biaya akreditasi pertama prodi gratis; jalur aman 6 bulan & keberatan peringkat; biaya unggul tetap RAB PT
+---
+Task ID: 9-a
+Agent: ppt-expert
+Task: Render slide 1–6 deck "Delapan Gerbang Menuju Unggul" UNITA
+Work Log:
+- slide_01.html — Cover full-bleed kampus-unita.jpg + photo-veil/glow, judul display Merriweather 86px, meta bar mono (39/2025 jo. 10/2026 · 65/24/14/8 · 23 Okt 2026), tanda tangan PPM UNITA.
+- slide_02.html — Stats bento 6 kartu (6/65/24/14/8/80, kartu SPU & ambang beraksen), bar proporsional komposisi 65 butir per kriteria, kotak cara membaca 3 lapis, footer dasar hukum.
+- slide_03.html — Alur 5 langkah penetapan Unggul (kartu 01–05 + panah ikon, tanpa SVG), panel Aturan Emas (skor 80 + 8 SPU), strip 4 konteks pasal (77/78/79/113).
+- slide_04.html — Section header Bagian 1: bgmesh + glow kiri, nomor bab ghost 01/02, judul "Delapan Gerbang Wajib", grid 8 chip kode butir SPU.
+- slide_05.html — SPU 1–4 grid 2x2 kartu: badge SPU + kode butir mono + baris AMBANG/MEKANISME/STRATEGI per kartu (SPMI, PPEPP, akreditasi prodi, kecukupan dosen).
+- slide_06.html — SPU 5–8 empat baris horizontal lebar (badge kiri, blok butir tengah, kolom AMBANG/STRATEGI kanan): DTJA, audit KAP WTP, diferensiasi misi, pengakuan tridharma.
+Stage Summary: 6/6 slide selesai dirender sesuai brief (palet navy #0A1B33/#EAF2FC/#38BDF8, Merriweather/Open Sans/IBM Plex Mono via global.css), bahasa Indonesia, speaker notes tersemat, tanpa SVG/base64, layout bervariasi antar-slide.
+
+---
+Task ID: 9-c
+Agent: ppt-expert
+Task: Render slide 13–18 deck "Delapan Gerbang Menuju Unggul" UNITA
+
+Work Log:
+- slide_13.html — K.3 Akuntabilitas: chip pill terkelompok 2 kolom (MASUKAN 24–27B + ambang dana ≥10%, PROSES 28A–33), LUARAN ≥80% (butir 34), DAMPAK SPU-6 (butir 35), panel mekanisme & strip strategi KAP.
+- slide_14.html — K.4 Diferensiasi Misi: rail butir di KANAN (cermin slide_11; 36A SPU-7, 36B, 37, 38, 39 SPU-8), kartu ambang besar ≥ 3, mekanisme 4 langkah berpanah, strip strategi benang merah.
+- slide_15.html — Papan Bukti: matriks 4 baris kelompok LKPT (K.1/K.2.1 13 tabel/K.2.2·K.2.3/K.3, L01–L24) + panel samping NASKAH N01–N14, strip peringatan PD Dikti (Psl 78 & 96) + footer strategi November.
+- slide_16.html — Mesin Kerja: split siklus 5 langkah vertikal bernomor dengan garis putus-putus (kiri) + kartu 7 pemilik akun aplikasi ppmunita/ppmk1–ppmk23 (kanan) + catatan aturan main butir terkunci/merah.
+- slide_17.html — Peta Jalan: timeline 4 fase horizontal Okt 2026–Jun 2027 dengan garis pembatas border, fase 3 diberi aksen GERBANG UNGGAH (unggah SAPTO 2.0 15–19 Mar), strip tenggat Psl 77 & Psl 113.
+- slide_18.html — Closing: foto kampus-unita.jpg sisi kanan dengan overlay navy pekat, judul Merriweather, 3 kartu strategi payung 01–03, 4 baris risiko→mitigasi, kotak aksen 4 keputusan rapat, footer PPM UNITA · 23 Oktober 2026.
+
+Stage Summary: 6/6 slide (13–18) selesai dirender 1280×720 sesuai brief — palet navy #0A1B33/#EAF2FC/#38BDF8, font Merriweather/Open Sans/IBM Plex Mono via token global.css, layout terdiversifikasi, tanpa SVG/page number, notes singkat Bahasa Indonesia tertanam di aside[data-notes].
+
+---
+Task ID: 9-b
+Agent: ppt-expert
+Task: Render slide 7–12 deck "Delapan Gerbang Menuju Unggul" UNITA
+
+Work Log:
+- slide_07.html — Split 50/50: kartu 5 pertanyaan bernomor (ambang mono: ≥2/9 prodi, ≥20%, ≥10%, minimal 3 aspek) + kartu aksen "Keputusan yang diminta" 4 butir (01–04), strip footer pemilik akun SPU ppmk1/ppmk21/ppmk3/ppmk4.
+- slide_08.html — Section header Bagian 2: ghost numeral "02 / 02" mono kanan, rule panjang, 4 chip legend MASUKAN/PROSES/LUARAN/DAMPAK, mini nav 6 kelompok lebar proporsional (K.1 4 · K.2.1 22 · K.2.2 8 · K.2.3 8 · K.3 18 · K.4 5).
+- slide_09.html — K.1 Budaya Mutu: 4 kolom sasaran MASUKAN→DAMPAK dengan panah Material Icons, badge SPU pada butir 1/2/4, chip ambang per kolom, panel MEKANISME + strip STRATEGI (kalender RTM dikunci Desember 2026).
+- slide_10.html — K.2.1 Relevansi Pendidikan: dua kolom padat (MASUKAN butir 5–9 + PROSES 10A–10C | LUARAN 11–13 + DAMPAK 14–15), rasio mono (20–40, PKMTK >35%, PMAP >0,01% dst.), SPU-4/SPU-5 diaksen, panel mekanisme & strategi berdampingan.
+- slide_11.html — K.2.2 Relevansi Penelitian: rail kiri 8 butir per sasaran (16A–19) dengan garis+titik alur, kartu hero ambang "≥ 100%" RLP, panel mekanisme, strip strategi (L19 & L21, Tabel 21 & 22a).
+- slide_12.html — K.2.3 Relevansi PkM: varian 4 kolom dengan border-top aksen + nomor langkah 01–04 (butir 20A–23B), dua kartu ambang RHKI/RRD ≥ 100%, mekanisme 5 langkah horizontal, strip strategi butir 39 & L20/L22.
+
+Stage Summary: 6/6 slide (07–12) selesai dirender 1280×720 sesuai brief — palet navy #0A1B33/#EAF2FC/#38BDF8 dan font Merriweather/Open Sans/IBM Plex Mono via token global.css, bahasa Indonesia, tanpa foto/SVG/base64/nomor halaman, layout terdiversifikasi (split, section header, 4-kolom flow, 2-kolom padat, left-rail, varian 4-kolom), speaker notes singkat tertanam di aside[data-notes].
+
+---
+Task ID: 9
+Agent: main
+Task: Buat PPT khusus Rapat Persiapan Akreditasi — bedah butir syarat unggul, mekanisme & strategi (18 slide)
+
+Work Log:
+- Konfirmasi user: 9 kriteria penuh (realita instrumen: 6 kelompok butir IAPT 4.1), task force inti, 14-18 slide, navy gelap #0A1B33 + sian #38BDF8, Merriweather+Open Sans, notes ringkas
+- Ekstrak data aplikasi: 65 INS (kode/nama/sasaran/ambang_u/sp_u), 24 LKPT, 14 NASKAH, 7 ACCOUNTS, OWNER map, 18 JADWAL_DEFAULT (IAPT 4.1, SAPTO 2.0)
+- Identifikasi 8 butir SPU via flag sp_u: butir 1, 2, 4 (K.1) · 7A, 11 (K.2.1) · 35 (K.3) · 36A, 39 (K.4); UNITA 9 prodi -> ambang prodi Unggul/A 20% = minimal 2 prodi
+- Arsipkan deck lama ke download/slides-permen10-2026/; slides/ baru berisi global.css (navy premium) + slides_brief.json (18 slide)
+- Fan-out 3 ppt-expert: slides[0:6], [6:12], [12:18] -> 18 HTML 1280x720, bahasa Indonesia, notes <aside data-notes>
+- Export batch_html2pptx (skills/pptx/batch_html2pptx.js): warning BOUNDS non-kritis (bleed .glow), 0 CRITICAL
+- Verifikasi visual slide 1/5/10/15/17 via screenshot: cover foto kampus, kartu SPU, K.2.1, matriks LKPT, timeline 4 fase — semua benar
+- Konversi PDF via LibreOffice
+
+Stage Summary:
+- Deliverable: download/Rapat-Persiapan-Akreditasi_UNITA-ButirUnggul-IAPT41-23Okt2026.pptx (20 MB, 18 slide) + .pdf (2,4 MB)
+- Struktur: cover -> angka kunci -> mekanisme penetapan -> 8 SPU (2 slide + 1 keputusan) -> 6 kriteria (butir/ambang/mekanisme/strategi) -> papan bukti LKPT-Naskah -> siklus kerja & pemilik akun -> roadmap Okt 2026-Jun 2027 -> strategi & keputusan rapat
+- Sumber HTML: download/slides/slide_01..18.html (bisa diedit lalu re-export)

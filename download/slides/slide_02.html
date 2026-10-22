@@ -2,101 +2,96 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Slide 02 — Dasar Hukum yang Kita Pegang</title>
+<title>02 · Peta Sesi &amp; Angka Kunci</title>
 <link rel="stylesheet" href="global.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<style>
-  html body { font-family: var(--font-body); color: var(--primary); }
-  .kicker { color:#8A6A1C; }
-  .reg-name { font-size:15px; font-weight:600; color:var(--primary); line-height:1.45; }
-  .reg-desc { font-size:12.5px; color:var(--muted); line-height:1.45; margin-top:3px; }
-  .bn { font-family:var(--font-num); font-size:12px; color:var(--muted); font-weight:500; }
-  .dot { position:absolute; left:2px; top:50%; transform:translateY(-50%); width:12px; height:12px; border-radius:50%; background:var(--paper); border:3px solid var(--accent); }
-</style>
 </head>
-<body>
+<body style="margin:0;background:var(--bg);">
 <div class="slide">
-<div style="position:absolute; inset:0; display:flex; flex-direction:column; padding:50px 64px 42px;">
+  <div class="glow" data-decor style="width:520px;height:520px;right:-200px;bottom:-240px;"></div>
 
-  <!-- Kepala -->
-  <div>
-    <div class="kicker">Landsan Regulasi</div>
-    <h1 style="font-family:var(--font-heading); font-size:34px; font-weight:600; color:var(--primary); margin:10px 0 0; line-height:1.2;">Dasar Hukum yang Kita Pegang</h1>
-    <div class="rule" style="margin-top:12px;"></div>
-  </div>
+  <div class="absolute inset-0 flex flex-col" style="padding:46px 60px 38px;">
+    <!-- Header -->
+    <div>
+      <div class="kicker" style="font-size:var(--fs-micro);">PETA SESI</div>
+      <h1 style="font-family:var(--font-heading);font-weight:900;font-size:var(--fs-h1);line-height:1.15;margin-top:8px;">Satu Tujuan, Angka yang Mengikat</h1>
+    </div>
 
-  <!-- Isi dua kolom -->
-  <div style="display:grid; grid-template-columns:58fr 42fr; gap:28px; margin-top:22px; flex:1; min-height:0;">
-
-    <!-- Kiri: hierarki berjenjang -->
-    <div style="position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:11px; padding:6px 0;">
-      <div data-decor aria-hidden="true" style="position:absolute; left:7px; top:14px; bottom:14px; width:2px; background:var(--line);"></div>
-
-      <div style="position:relative; padding-left:34px;">
-        <span data-decor aria-hidden="true" class="dot"></span>
-        <div class="card" style="padding:11px 18px;">
-          <div class="reg-name">UU <span class="pasal">No. 12 Tahun 2012</span></div>
-          <div class="reg-desc">tentang Pendidikan Tinggi</div>
-        </div>
+    <!-- Bento 6 statistik -->
+    <div class="grid grid-cols-3" style="gap:14px;margin-top:18px;">
+      <div class="card flex flex-col justify-between" style="padding:15px 18px 13px;height:116px;">
+        <div class="num" style="font-size:46px;font-weight:600;line-height:1;">6</div>
+        <div style="font-size:var(--fs-small);color:var(--muted);line-height:1.3;">kelompok butir kriteria</div>
       </div>
-
-      <div style="position:relative; padding-left:34px;">
-        <span data-decor aria-hidden="true" class="dot"></span>
-        <div class="card" style="padding:11px 18px; margin-left:20px;">
-          <div class="reg-name">PP <span class="pasal">No. 4 Tahun 2014</span> dan PP <span class="pasal">No. 57 Tahun 2021</span> jo. PP <span class="pasal">No. 4 Tahun 2022</span></div>
-          <div class="reg-desc">Standar Nasional Pendidikan</div>
-        </div>
+      <div class="card flex flex-col justify-between" style="padding:15px 18px 13px;height:116px;">
+        <div class="num" style="font-size:46px;font-weight:600;line-height:1;">65</div>
+        <div style="font-size:var(--fs-small);color:var(--muted);line-height:1.3;">butir LED IAPT 4.1</div>
       </div>
-
-      <div style="position:relative; padding-left:34px;">
-        <span data-decor aria-hidden="true" class="dot"></span>
-        <div class="card" style="padding:11px 18px; margin-left:40px;">
-          <div class="reg-name">Permendiktisaintek <span class="pasal">No. 39 Tahun 2025</span> &nbsp;<span class="bn">(Berita Negara 2025 No. 661)</span></div>
-          <div class="reg-desc">menggantikan Permendikbudristek <span class="pasal">No. 53 Tahun 2023</span></div>
-        </div>
+      <div class="card flex flex-col justify-between" style="padding:15px 18px 13px;height:116px;">
+        <div class="num" style="font-size:46px;font-weight:600;line-height:1;">24</div>
+        <div style="font-size:var(--fs-small);color:var(--muted);line-height:1.3;">tabel LKPT</div>
       </div>
-
-      <div style="position:relative; padding-left:34px;">
-        <span data-decor aria-hidden="true" class="dot" style="width:14px; height:14px; background:var(--accent);"></span>
-        <div class="card-gold" style="padding:12px 18px; margin-left:60px; border-left:4px solid var(--accent);">
-          <div class="reg-name">PERMENDIKTISAINTEK <span class="pasal">No. 10 Tahun 2026</span> &nbsp;<span class="bn" style="color:#6E5413;">(Berita Negara 2026 No. 477)</span></div>
-          <div style="display:flex; align-items:center; gap:10px; margin-top:4px; flex-wrap:wrap;">
-            <div class="reg-desc" style="margin-top:0;">perubahan atas Permen <span class="pasal">39/2025</span></div>
-            <span class="pill pill-gold" style="color:#6E5413;">Dokumen utama hari ini</span>
-          </div>
-        </div>
+      <div class="card flex flex-col justify-between" style="padding:15px 18px 13px;height:116px;">
+        <div class="num" style="font-size:46px;font-weight:600;line-height:1;">14</div>
+        <div style="font-size:var(--fs-small);color:var(--muted);line-height:1.3;">naskah LED</div>
+      </div>
+      <div class="card card-acc flex flex-col justify-between" style="padding:15px 18px 13px;height:116px;background:linear-gradient(165deg, rgba(56,189,248,.14), rgba(13,33,64,.6));">
+        <div class="num" style="font-size:46px;font-weight:600;line-height:1;color:var(--accent);">8</div>
+        <div style="font-size:var(--fs-small);color:var(--primary);font-weight:600;line-height:1.3;">butir Syarat Perlu Unggul (SPU)</div>
+      </div>
+      <div class="card card-acc flex flex-col justify-between" style="padding:15px 18px 13px;height:116px;background:linear-gradient(165deg, rgba(56,189,248,.14), rgba(13,33,64,.6));">
+        <div class="num" style="font-size:46px;font-weight:600;line-height:1;color:var(--accent);">80</div>
+        <div style="font-size:var(--fs-small);color:var(--primary);font-weight:600;line-height:1.3;">skor ambang status Unggul</div>
       </div>
     </div>
 
-    <!-- Kanan: fakta penetapan -->
-    <aside class="card-navy" style="padding:22px 26px; display:flex; flex-direction:column;">
-      <h2 style="font-family:var(--font-heading); font-size:21px; font-weight:600; color:#FFFFFF; margin:0;">Fakta yang perlu dicatat</h2>
-      <div class="rule" style="margin-top:10px;"></div>
-      <div style="flex:1; display:flex; flex-direction:column; justify-content:space-evenly; margin-top:4px;">
-        <div style="display:flex; gap:14px; padding:11px 0; border-bottom:1px solid rgba(241,231,206,0.16);">
-          <span class="pasal" style="font-size:13px; color:var(--accent); flex-shrink:0; padding-top:2px;">01</span>
-          <p style="margin:0; font-size:14px; line-height:1.55; color:#E8ECF2;">Ditetapkan Menteri <strong style="color:#FFFFFF;">Brian Yuliarto</strong> di Jakarta, <span class="pasal" style="color:var(--gold-soft);">14 Juli 2026</span>.</p>
-        </div>
-        <div style="display:flex; gap:14px; padding:11px 0; border-bottom:1px solid rgba(241,231,206,0.16);">
-          <span class="pasal" style="font-size:13px; color:var(--accent); flex-shrink:0; padding-top:2px;">02</span>
-          <p style="margin:0; font-size:14px; line-height:1.55; color:#E8ECF2;">Diundangkan <span class="pasal" style="color:var(--gold-soft);">16 Juli 2026</span> dan berlaku sejak tanggal diundangkan (<span class="pasal" style="color:var(--gold-soft);">Pasal II</span>).</p>
-        </div>
-        <div style="display:flex; gap:14px; padding:11px 0;">
-          <span class="pasal" style="font-size:13px; color:var(--accent); flex-shrink:0; padding-top:2px;">03</span>
-          <p style="margin:0; font-size:14px; line-height:1.55; color:#E8ECF2;">Berisi <span class="pasal" style="color:var(--gold-soft);">26 butir</span> perubahan (<span class="pasal" style="color:var(--gold-soft);">Pasal I angka 1–26</span>), mayoritas menyentuh mekanisme akreditasi BAN-PT/LAM.</p>
+    <!-- Strip komposisi -->
+    <div style="margin-top:20px;">
+      <div class="flex items-baseline justify-between">
+        <div class="num" style="font-size:var(--fs-micro);letter-spacing:.2em;color:var(--faint);font-weight:600;">KOMPOSISI BUTIR PER KELOMPOK KRITERIA</div>
+        <div class="num" style="font-size:var(--fs-micro);color:var(--faint);">TOTAL <span style="color:var(--accent);">65</span></div>
+      </div>
+      <div class="flex w-full overflow-hidden" style="height:20px;border-radius:6px;margin-top:8px;border:1px solid var(--line-2);">
+        <div style="width:6.15%;background:rgba(56,189,248,.85);" class="flex items-center justify-center"><span class="num" style="font-size:11px;font-weight:600;color:#06263E;">4</span></div>
+        <div style="width:33.85%;background:rgba(56,189,248,.55);border-left:1px solid var(--bg);" class="flex items-center justify-center"><span class="num" style="font-size:11px;font-weight:600;color:#06263E;">22</span></div>
+        <div style="width:12.3%;background:rgba(56,189,248,.36);border-left:1px solid var(--bg);" class="flex items-center justify-center"><span class="num" style="font-size:11px;font-weight:600;color:var(--primary);">8</span></div>
+        <div style="width:12.3%;background:rgba(56,189,248,.24);border-left:1px solid var(--bg);" class="flex items-center justify-center"><span class="num" style="font-size:11px;font-weight:600;color:var(--primary);">8</span></div>
+        <div style="width:27.7%;background:rgba(56,189,248,.14);border-left:1px solid var(--bg);" class="flex items-center justify-center"><span class="num" style="font-size:11px;font-weight:600;color:var(--primary);">18</span></div>
+        <div style="width:7.7%;background:rgba(56,189,248,.07);border-left:1px solid var(--bg);" class="flex items-center justify-center"><span class="num" style="font-size:11px;font-weight:600;color:var(--primary);">5</span></div>
+      </div>
+      <div style="margin-top:9px;font-size:var(--fs-small);color:var(--muted);">K.1 Budaya Mutu <span class="num" style="color:var(--accent);font-weight:600;">4</span> &nbsp;·&nbsp; K.2.1 Relevansi Pendidikan <span class="num" style="color:var(--accent);font-weight:600;">22</span> &nbsp;·&nbsp; K.2.2 Relevansi Penelitian <span class="num" style="color:var(--accent);font-weight:600;">8</span> &nbsp;·&nbsp; K.2.3 Relevansi PkM <span class="num" style="color:var(--accent);font-weight:600;">8</span> &nbsp;·&nbsp; K.3 Akuntabilitas <span class="num" style="color:var(--accent);font-weight:600;">18</span> &nbsp;·&nbsp; K.4 Diferensiasi Misi <span class="num" style="color:var(--accent);font-weight:600;">5</span></div>
+    </div>
+
+    <!-- Cara membaca + dasar hukum -->
+    <div class="flex items-stretch mt-auto" style="gap:22px;">
+      <div class="card" style="flex:1.55;padding:16px 20px;">
+        <div class="num" style="font-size:var(--fs-micro);letter-spacing:.2em;color:var(--accent);font-weight:600;">CARA MEMBACA SESI INI</div>
+        <div class="flex items-center flex-wrap" style="gap:8px;margin-top:10px;font-size:var(--fs-small);color:var(--primary);">
+          <span style="color:var(--muted);">Setiap kriteria dibedah tiga lapis:</span>
+          <span style="border:1px solid var(--line-2);border-radius:999px;padding:3px 12px;font-weight:700;">BUTIR &amp; ambang Unggul</span>
+          <span class="material-icons" aria-hidden="true" style="font-size:15px;color:var(--accent);">east</span>
+          <span style="border:1px solid var(--line-2);border-radius:999px;padding:3px 12px;font-weight:700;">MEKANISME pencapaian</span>
+          <span class="material-icons" aria-hidden="true" style="font-size:15px;color:var(--accent);">east</span>
+          <span style="border:1px solid var(--accent-line);border-radius:999px;padding:3px 12px;font-weight:700;background:var(--accent-soft);color:var(--accent);">STRATEGI &amp; penanggung jawab (akun aplikasi)</span>
         </div>
       </div>
-    </aside>
+      <div class="flex items-center" style="flex:1;border-left:1px solid var(--line);padding-left:22px;">
+        <div style="font-size:var(--fs-micro);line-height:1.7;color:var(--faint);">
+          <span class="material-icons" aria-hidden="true" style="font-size:13px;color:var(--faint);vertical-align:-2px;">menu_book</span>
+          Permendiktisaintek No. 39/2025 tentang Penjaminan Mutu Pendidikan Tinggi jo. No. 10/2026 (BN 2026 No. 477) · instrumen IAPT 4.1 · unggah via SAPTO 2.0
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Kalimat penutup -->
-  <div class="card-gold" style="margin-top:18px; border-left:4px solid var(--accent); padding:13px 20px; display:flex; align-items:center; gap:14px;">
-    <span class="material-icons" aria-hidden="true" style="font-size:22px; color:#8A6A1C;">gavel</span>
-    <p style="margin:0; font-size:15px; line-height:1.5; color:var(--primary);">Dengan demikian, <strong>sejak pertengahan Juli 2026</strong> seluruh persiapan akreditasi kita berpijak pada <span class="pasal">Permen 39/2025</span> sebagaimana telah diubah.</p>
-  </div>
-
 </div>
-</div>
+<aside data-notes class="hidden">
+  <ul>
+    <li>Tegaskan: 65 butir bukan 65 pekerjaan setara — 8 di antaranya gerbang wajib (SPU).</li>
+    <li>Komposisi menunjukkan bobot terbesar di K.2.1 (22 butir) dan K.3 (18 butir).</li>
+    <li>Ingatkan ambang pengikat: skor total 80 plus seluruh 8 SPU terpenuhi.</li>
+    <li>Jelaskan ritme bedah sesi: butir &amp; ambang → mekanisme → strategi &amp; penanggung jawab (akun aplikasi).</li>
+  </ul>
+</aside>
 </body>
 </html>
