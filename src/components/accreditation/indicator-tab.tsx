@@ -39,7 +39,7 @@ export function IndicatorTab() {
       const st = data.isian[i.kode]?.status || 'Belum mulai'
       if (fSt !== 'semua' && st !== fSt) return false
       if (qq) {
-        const hay = `${i.kode} ${i.nama} ${i.kriteria} ${data.isian[i.kode]?.pic || ''}`.toLowerCase()
+        const hay = `${i.kode} ${i.nama} ${i.kriteria}`.toLowerCase()
         if (!hay.includes(qq)) return false
       }
       return true
@@ -63,7 +63,7 @@ export function IndicatorTab() {
       {/* ==== SIDE: filter + daftar ==== */}
       <aside className="side dcard" style={{ padding: 14 }}>
         <div className="filters">
-          <input type="search" value={q} onChange={e => setQ(e.target.value)} placeholder="Cari kode / nama / PIC…" aria-label="Cari indikator" />
+          <input type="search" value={q} onChange={e => setQ(e.target.value)} placeholder="Cari kode / nama…" aria-label="Cari indikator" />
           <select value={fKr} onChange={e => setFKr(e.target.value)} aria-label="Filter kriteria">
             <option value="semua">Semua kriteria</option>
             {KR.map(([nama, kode]) => (
@@ -130,7 +130,6 @@ function IndicatorDetail({ kode }: { kode: string }) {
   const rw = canWrite('isian', kode)
   const [d, setD] = useState<IsianData>({
     status: stored.status || 'Belum mulai',
-    pic: stored.pic || '',
     sim_u: stored.sim_u || '',
     analisis: stored.analisis || '',
     narasi_url: stored.narasi_url || '',
@@ -146,7 +145,6 @@ function IndicatorDetail({ kode }: { kode: string }) {
 
   const completeness = [
     d.status !== 'Belum mulai',
-    !!d.pic.trim(),
     !!d.sim_u,
     d.analisis.trim().length >= 80,
     cleanLinks(d.bukti).some(l => isUrl(l.url)),
@@ -158,7 +156,6 @@ function IndicatorDetail({ kode }: { kode: string }) {
   const doSave = async () =>
     save('isian', kode, {
       ...d,
-      pic: d.pic.trim(),
       sim_u: d.sim_u === 'x-belum' ? '' : d.sim_u,
       bukti: cleanLinks(d.bukti),
     })
@@ -180,9 +177,9 @@ function IndicatorDetail({ kode }: { kode: string }) {
         </div>
         <div className="prog">
           <div className="meter">
-            <i style={{ width: `${(done / 6) * 100}%` }} />
+            <i style={{ width: `${(done / 5) * 100}%` }} />
           </div>
-          <span>Kelengkapan isian {done}/6</span>
+          <span>Kelengkapan isian {done}/5</span>
         </div>
       </div>
 
@@ -230,22 +227,16 @@ function IndicatorDetail({ kode }: { kode: string }) {
 
         {/* FILL + SHIELD */}
         <div className="fill">
-          <div className="row2">
-            <label className="field">
-              <FieldLabel>Status narasi LED</FieldLabel>
-              <select value={d.status} onChange={e => mut({ status: e.target.value })} disabled={!rw} aria-label="Status">
-                {ST.map(s => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="field">
-              <FieldLabel>PIC / unit penanggung jawab</FieldLabel>
-              <input type="text" value={d.pic} disabled={!rw} placeholder="mis. LPPM, Biro SDM" onChange={e => mut({ pic: e.target.value })} />
-            </label>
-          </div>
+          <label className="field">
+            <FieldLabel>Status narasi LED</FieldLabel>
+            <select value={d.status} onChange={e => mut({ status: e.target.value })} disabled={!rw} aria-label="Status">
+              {ST.map(s => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="field">
             <FieldLabel>Simulasi penilaian Unggul</FieldLabel>
             <FieldHint>Nilai jujur berdasarkan bukti yang sudah ada, bukan rencana. Bandingkan dengan kotak “Agar skor 1”.</FieldHint>

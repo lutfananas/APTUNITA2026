@@ -17,7 +17,6 @@ export interface SessionUser {
 // Payload isian per kategori (mengikuti struktur aplikasi asli)
 export interface IsianData {
   status: string
-  pic: string
   sim_u: string
   analisis: string
   narasi_url: string
@@ -26,7 +25,6 @@ export interface IsianData {
 }
 export interface LkptData {
   status: string
-  pic: string
   terisi: number | ''
   file_url: string
   catatan: string

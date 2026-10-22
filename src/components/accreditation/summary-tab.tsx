@@ -44,25 +44,12 @@ export function SummaryTab({ onGo }: { onGo: (t: 'indikator' | 'lkpt' | 'naskah'
       const d = items.filter(i => data.isian[i.kode]?.status === 'Draf').length
       return { nama, total: items.length, f, r, d, b: items.length - f - r - d }
     })
-    // butir belum final per PIC
-    const unit: Record<string, { n: number; krs: string[] }> = {}
-    for (const i of INS) {
-      if (data.isian[i.kode]?.status === 'Final') continue
-      const pic = (data.isian[i.kode]?.pic || '').trim() || '—'
-      const e = (unit[pic] ||= { n: 0, krs: [] })
-      e.n++
-      if (!e.krs.includes(krKode(i.kriteria))) e.krs.push(krKode(i.kriteria))
-    }
-    const unitArr = Object.entries(unit)
-      .map(([u, v]) => ({ u, ...v }))
-      .sort((a, b) => b.n - a.n)
-      .slice(0, 8)
     // jadwal berikutnya
     const jAll = Object.values(data.jadwal)
     const nextJ = jAll
       .filter(j => j.mulai && j.status !== 'Selesai')
       .sort((a, b) => a.mulai.localeCompare(b.mulai))[0]
-    return { simYa, simTidak, simNa, skor, final: final.length, bukti: bukti.length, lkLengkap: lkLengkap.length, lkAvg, sp, spOk, finalPerKr, mx, stKr, unitArr, nextJ }
+    return { simYa, simTidak, simNa, skor, final: final.length, bukti: bukti.length, lkLengkap: lkLengkap.length, lkAvg, sp, spOk, finalPerKr, mx, stKr, nextJ }
   }, [data])
 
   const tileIcon = (d: string) => (
@@ -259,31 +246,6 @@ export function SummaryTab({ onGo }: { onGo: (t: 'indikator' | 'lkpt' | 'naskah'
               <span className="sq" style={{ background: 'var(--s0)' }} /> Belum mulai
             </span>
           </div>
-        </div>
-
-        <div className="dcard">
-          <h2>Butir belum final per unit</h2>
-          <p className="hint">Dikelompokkan dari kolom PIC yang diisi tim. Isi kolom PIC agar pembagian kerja terlihat.</p>
-          {s.unitArr.length === 0 ? (
-            <div className="empty">Semua butir final — luar biasa!</div>
-          ) : (
-            <div className="hb">
-              {s.unitArr.map(u => (
-                <div key={u.u} className="i">
-                  <div>
-                    {u.u}
-                    <em>{u.krs.join(' · ')}</em>
-                  </div>
-                  <div>
-                    <div className="meter" style={{ height: 6 }}>
-                      <i className="grow" style={{ width: `${(u.n / Math.max(1, s.unitArr[0].n)) * 100}%` }} />
-                    </div>
-                  </div>
-                  <span className="v">{u.n}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 

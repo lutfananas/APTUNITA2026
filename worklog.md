@@ -77,3 +77,22 @@ Stage Summary:
 - Popup larangan aktif: isian milik akun lain tertutup shield transparan (nilai tetap terlihat, cursor not-allowed, hover garis merah), klik -> dialog "Akses ditolak" glass + pesan pemilik akun + tombol navigasi
 - UI aplikasi database kini mereplikasi desain asli pengguna: font Literata/IBM Plex, hero foto kampus, ring simulasi Unggul, kartu liquid glass, warna kriteria K.1-K.6
 - Fungsi database tidak berubah: izin server-side, audit log, bcrypt tetap
+
+---
+Task ID: 6
+Agent: main
+Task: Hapus kolom PIC / unit penanggung jawab dari seluruh aplikasi
+
+Work Log:
+- store.tsx: hapus field pic dari interface IsianData & LkptData
+- indicator-tab.tsx: hapus input "PIC / unit penanggung jawab", kelengkapan 6→5 poin (meter & label), hay pencarian tanpa pic, placeholder "Cari kode / nama…", payload simpan tanpa pic; Status narasi jadi field penuh
+- lkpt-tab.tsx: hapus input PIC, row2 3 kolom → 2 kolom (Status + Keterisian), payload simpan tanpa pic
+- summary-tab.tsx: hapus agregasi "butir belum final per PIC" + kartu "Butir belum final per unit"; kartu "Status narasi per kriteria" otomatis full-width (g2 auto-fit)
+- Fix: edit awal menghapus 1 closing div g2 → dipulihkan
+- Verifikasi tsc (src bersih), agent-browser: login admin, form LED tanpa PIC, LKPT tanpa PIC, simpan L01 sukses (audit log, "Terakhir disimpan oleh ppmunita"), Ringkasan tanpa kartu per-unit, 0 error console
+
+Stage Summary:
+- Kolom PIC / unit penanggung jawab hilang dari Indikator LED, LKPT, dan Ringkasan
+- Sistem izin per-akun (shield/popup) tidak berubah — basisnya kriteria akun, bukan kolom PIC
+- Data lama dengan key pic di DB diabaikan UI, tidak perlu migrasi
+

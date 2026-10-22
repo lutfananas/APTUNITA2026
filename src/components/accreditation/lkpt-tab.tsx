@@ -56,7 +56,6 @@ function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: s
   const rw = canWrite('lkpt', id)
   const [d, setD] = useState<LkptData>({
     status: stored.status || 'Belum mulai',
-    pic: stored.pic || '',
     terisi: (stored.terisi ?? '') as number | '',
     file_url: stored.file_url || '',
     catatan: stored.catatan || '',
@@ -72,7 +71,6 @@ function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: s
   const doSave = async () =>
     save('lkpt', id, {
       ...d,
-      pic: d.pic.trim(),
       terisi: d.terisi === '' ? '' : Math.max(0, Math.min(100, Number(d.terisi))),
       bukti: cleanLinks(d.bukti),
     })
@@ -116,7 +114,7 @@ function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: s
           </div>
         </div>
         <div className="fill">
-          <div className="row2" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          <div className="row2" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <label className="field">
               <FieldLabel>Status</FieldLabel>
               <select value={d.status} onChange={e => mut({ status: e.target.value })} disabled={!rw} aria-label="Status tabel">
@@ -126,10 +124,6 @@ function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: s
                   </option>
                 ))}
               </select>
-            </label>
-            <label className="field">
-              <FieldLabel>PIC</FieldLabel>
-              <input type="text" value={d.pic} disabled={!rw} onChange={e => mut({ pic: e.target.value })} />
             </label>
             <label className="field">
               <FieldLabel>Keterisian (%)</FieldLabel>
