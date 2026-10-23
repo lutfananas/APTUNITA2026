@@ -29,6 +29,12 @@ export interface LkptData {
   file_url: string
   catatan: string
   bukti: { nama: string; url: string }[]
+  /** Isian grid tabel mode fixed: { [rowKey]: { [colKey]: nilai } } — format Panduan LKPT IAPT 4.1. */
+  cells?: Record<string, Record<string, string>>
+  /** Isian grid tabel mode dynamic: daftar baris { [colKey]: nilai }. */
+  rows?: Record<string, string>[]
+  /** Pilihan bidang diferensiasi misi (khusus L18). */
+  bidang?: string
 }
 export interface NaskahData {
   status: string

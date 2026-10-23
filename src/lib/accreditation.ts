@@ -27,6 +27,46 @@ export const BUKTI = raw.BUKTI as Record<string, string[]>
 export const INS = raw.INS as InsIndicator[]
 export const LKPT = raw.LKPT as [string, string, string, string, string, string, string][]
 export const NASKAH = raw.NASKAH as [string, string, number | null, string][]
+
+/** Definisi satu kolom isian tabel LKPT (mengikuti format resmi Panduan LKPT IAPT 4.1). */
+export interface LkptCol {
+  key: string
+  label: string
+  /** Header bergrup (mis. "Akademik", "Pendidikan Tertinggi", "Tingkat"). */
+  group?: string
+  /** true = isian angka (rata kanan, lebar ramping). */
+  num?: boolean
+  /** Lebar minimum kolom (px). */
+  w?: number
+}
+/** Definisi baris tetap (mode fixed). */
+export interface LkptRowDef {
+  key: string
+  label: string
+  /** Penanda resmi pada kolom jumlah, mis. "NA =", "NPT =". */
+  tag?: string
+  /** Kunci kolom yang tidak boleh diisi (sel diarsir abu seperti tabel resmi). */
+  disable?: string[]
+}
+/** Spesifikasi grid isian per tabel LKPT. */
+export interface LkptGridSpec {
+  mode: 'fixed' | 'dynamic'
+  /** Judul kolom label baris (mode fixed), mis. "Status dan Peringkat Akreditasi". */
+  firstCol?: string
+  /** Kolom tempat penanda tag baris ditempel (default: kolom "jumlah"). */
+  tagCol?: string
+  /** Jumlah baris awal untuk mode dynamic. */
+  minRows?: number
+  rows?: LkptRowDef[]
+  columns: LkptCol[]
+  /** Baris penutup (Jumlah/Rata-rata/Total). */
+  footer?: { label?: string; labelSpan?: number; cells?: Record<string, string> }
+  /** Huruf penanda resmi pada sel tertentu, mis. d1 =, e1 =, f1 =. */
+  cellTags?: { row: string; col: string; tag: string }[]
+  /** Dropdown pilihan tambahan (khusus L18: pilihan bidang diferensiasi misi). */
+  picker?: { key: string; label: string; options: string[] }
+}
+export const LKPT_GRID = raw.LKPT_GRID as Record<string, LkptGridSpec>
 export const IDN = raw.IDN as [string, string][]
 export const UNCOUNTED = raw.UNCOUNTED as string[]
 export const NK_KR = raw.NK_KR as Record<string, string>

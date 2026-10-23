@@ -2031,6 +2031,436 @@
    "Syarat Unggul: diaudit KAP dengan opini Wajar Tanpa Pengecualian dan ikhtisar laporan keuangan dipublikasikan."
   ]
  ],
+ "LKPT_GRID": {
+  "L01": {
+   "mode": "fixed",
+   "firstCol": "Status dan Peringkat Akreditasi",
+   "tagCol": "jumlah",
+   "rows": [
+    { "key": "unggul", "label": "Terakreditasi Unggul", "tag": "N(Unggul) =" },
+    { "key": "a", "label": "Terakreditasi A", "tag": "NA =" },
+    { "key": "baik_sekali", "label": "Terakreditasi Baik Sekali", "tag": "N(Baik_Sekali) =" },
+    { "key": "b", "label": "Terakreditasi B", "tag": "NB =" },
+    { "key": "baik", "label": "Terakreditasi Baik", "tag": "N(Baik) =" },
+    { "key": "c", "label": "Terakreditasi C", "tag": "NC =" },
+    { "key": "minimum", "label": "Terakreditasi Minimum", "tag": "N(M) =" },
+    { "key": "tidak", "label": "Tidak Terakreditasi/Kadaluarsa", "tag": "NK =" }
+   ],
+   "columns": [
+    { "key": "s3", "label": "S-3", "group": "Akademik", "num": true, "w": 54 },
+    { "key": "s2", "label": "S-2", "group": "Akademik", "num": true, "w": 54 },
+    { "key": "s1", "label": "S-1", "group": "Akademik", "num": true, "w": 54 },
+    { "key": "sp2", "label": "Sp-2", "group": "Profesi", "num": true, "w": 54 },
+    { "key": "sp1", "label": "Sp-1", "group": "Profesi", "num": true, "w": 54 },
+    { "key": "prof", "label": "Profesi", "group": "Profesi", "num": true, "w": 62 },
+    { "key": "s3t", "label": "S-3T", "group": "Vokasi", "num": true, "w": 56 },
+    { "key": "s2t", "label": "S-2T", "group": "Vokasi", "num": true, "w": 56 },
+    { "key": "d4", "label": "D-4", "group": "Vokasi", "num": true, "w": 54 },
+    { "key": "d3", "label": "D-3", "group": "Vokasi", "num": true, "w": 54 },
+    { "key": "d2", "label": "D-2", "group": "Vokasi", "num": true, "w": 54 },
+    { "key": "d1", "label": "D-1", "group": "Vokasi", "num": true, "w": 54 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 118 }
+   ],
+   "footer": { "label": "Jumlah", "labelSpan": 2, "cells": { "jumlah": "NPS =" } }
+  },
+  "L02": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 105 },
+    { "key": "nama", "label": "Nama Program Studi", "w": 190 },
+    { "key": "dt", "label": "Jumlah Dosen Tetap", "num": true, "w": 112 },
+    { "key": "mhs", "label": "Jumlah Mahasiswa", "num": true, "w": 112 },
+    { "key": "rasio", "label": "Rasio Dosen terhadap Mahasiswa", "w": 132 }
+   ]
+  },
+  "L03": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 105 },
+    { "key": "nama", "label": "Nama Program Studi", "w": 185 },
+    { "key": "dok", "label": "Doktor/ Doktor Terapan/ Subspesialis", "group": "Pendidikan Tertinggi", "num": true, "w": 122 },
+    { "key": "mgt", "label": "Magister/ Magister Terapan/ Spesialis", "group": "Pendidikan Tertinggi", "num": true, "w": 122 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 84 }
+   ],
+   "footer": { "label": "", "labelSpan": 3, "cells": { "dok": "Total(4):", "jumlah": "Total(6):" } }
+  },
+  "L04": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 105 },
+    { "key": "nama", "label": "Nama Program Studi", "w": 170 },
+    { "key": "dok", "label": "Doktor/ Doktor Terapan/ Subspesialis", "group": "Pendidikan Tertinggi", "num": true, "w": 116 },
+    { "key": "mgt", "label": "Magister/ Magister Terapan/ Spesialis", "group": "Pendidikan Tertinggi", "num": true, "w": 116 },
+    { "key": "instansi", "label": "Nama Instansi Asal", "w": 150 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 82 }
+   ]
+  },
+  "L05": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "nama", "label": "Nama Prodi", "w": 170 },
+    { "key": "lulusan", "label": "Jumlah Lulusan", "num": true, "w": 100 },
+    { "key": "aktif", "label": "Jumlah Mahasiswa Aktif yang memenuhi beban belajar diluar Prodi minimal 10 sks", "num": true, "w": 190 },
+    { "key": "pct", "label": "Persentase", "num": true, "w": 108 }
+   ],
+   "footer": { "label": "", "labelSpan": 3, "cells": { "aktif": "Rata-rata" } }
+  },
+  "L06": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 105 },
+    { "key": "nama", "label": "Nama Program Studi jenjang Doktor", "w": 175 },
+    { "key": "gb", "label": "Jabatan Akademik Guru Besar", "num": true, "w": 118 },
+    { "key": "lgb", "label": "Jabatan Akademik Selain Guru Besar", "num": true, "w": 128 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 82 },
+    { "key": "pct", "label": "Persentase Guru Besar", "num": true, "w": 112 }
+   ]
+  },
+  "L07": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 100 },
+    { "key": "nama", "label": "Nama Program Studi", "w": 165 },
+    { "key": "jenjang", "label": "Jenjang Program Studi", "w": 88 },
+    { "key": "gb", "label": "Guru Besar", "group": "Jabatan Akademik", "num": true, "w": 76 },
+    { "key": "lk", "label": "Lektor Kepala", "group": "Jabatan Akademik", "num": true, "w": 84 },
+    { "key": "lek", "label": "Lektor", "group": "Jabatan Akademik", "num": true, "w": 68 },
+    { "key": "aa", "label": "Asisten Ahli", "group": "Jabatan Akademik", "num": true, "w": 82 },
+    { "key": "tp", "label": "Tenaga Pengajar", "num": true, "w": 96 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 82 }
+   ],
+   "footer": { "label": "Jumlah", "labelSpan": 4, "cells": { "jumlah": "NDT =" } }
+  },
+  "L08": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 100 },
+    { "key": "nama", "label": "Nama Program Studi", "w": 165 },
+    { "key": "jenjang", "label": "Jenjang Program Studi", "w": 88 },
+    { "key": "ts2", "label": "TS-2", "num": true, "w": 70 },
+    { "key": "ts1", "label": "TS-1", "num": true, "w": 70 },
+    { "key": "ts", "label": "TS", "num": true, "w": 70 },
+    { "key": "pct", "label": "Persentase Penurunan", "num": true, "w": 112 }
+   ]
+  },
+  "L09": {
+   "mode": "fixed",
+   "firstCol": "Tahun Masuk",
+   "rows": [
+    { "key": "ts3", "label": "TS-3", "disable": ["a_ts6", "a_ts5", "a_ts4"] },
+    { "key": "ts2", "label": "TS-2", "disable": ["a_ts6", "a_ts5", "a_ts4", "a_ts3"] },
+    { "key": "ts1", "label": "TS-1", "disable": ["a_ts6", "a_ts5", "a_ts4", "a_ts3", "a_ts2"] },
+    { "key": "ts", "label": "TS", "disable": ["a_ts6", "a_ts5", "a_ts4", "a_ts3", "a_ts2", "a_ts1", "akhir", "lulus"] }
+   ],
+   "columns": [
+    { "key": "a_ts6", "label": "awal TS-6", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts5", "label": "awal TS-5", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts4", "label": "awal TS-4", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts3", "label": "awal TS-3", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts2", "label": "awal TS-2", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts1", "label": "awal TS-1", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "akhir", "label": "Akhir TS", "num": true, "w": 76 },
+    { "key": "lulus", "label": "Jumlah Lulusan s.d. akhir TS", "num": true, "w": 118 }
+   ],
+   "cellTags": [
+    { "row": "ts3", "col": "a_ts3", "tag": "d1 =" },
+    { "row": "ts3", "col": "akhir", "tag": "e1 =" },
+    { "row": "ts3", "col": "lulus", "tag": "f1 =" }
+   ]
+  },
+  "L10": {
+   "mode": "fixed",
+   "firstCol": "Tahun Masuk",
+   "rows": [
+    { "key": "ts2", "label": "TS-2", "disable": ["a_ts4", "a_ts3"] },
+    { "key": "ts1", "label": "TS-1", "disable": ["a_ts4", "a_ts3", "a_ts2"] },
+    { "key": "ts", "label": "TS", "disable": ["a_ts4", "a_ts3", "a_ts2", "a_ts1", "akhir", "lulus"] }
+   ],
+   "columns": [
+    { "key": "a_ts4", "label": "awal TS-4", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts3", "label": "awal TS-3", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts2", "label": "awal TS-2", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts1", "label": "awal TS-1", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "akhir", "label": "Akhir TS", "num": true, "w": 76 },
+    { "key": "lulus", "label": "Jumlah Lulusan s.d. akhir TS", "num": true, "w": 118 }
+   ],
+   "cellTags": [
+    { "row": "ts2", "col": "a_ts2", "tag": "d2 =" },
+    { "row": "ts2", "col": "akhir", "tag": "e2 =" },
+    { "row": "ts2", "col": "lulus", "tag": "f2 =" }
+   ]
+  },
+  "L11": {
+   "mode": "fixed",
+   "firstCol": "Tahun Masuk",
+   "rows": [
+    { "key": "ts7", "label": "TS-7" },
+    { "key": "ts6", "label": "TS-6", "disable": ["a_ts7"] },
+    { "key": "ts5", "label": "TS-5", "disable": ["a_ts7", "a_ts6"] },
+    { "key": "ts4", "label": "TS-4", "disable": ["a_ts7", "a_ts6", "a_ts5"] },
+    { "key": "ts3", "label": "TS-3", "disable": ["a_ts7", "a_ts6", "a_ts5", "a_ts4"] },
+    { "key": "ts2", "label": "TS-2", "disable": ["a_ts7", "a_ts6", "a_ts5", "a_ts4", "a_ts3"] },
+    { "key": "ts1", "label": "TS-1", "disable": ["a_ts7", "a_ts6", "a_ts5", "a_ts4", "a_ts3", "a_ts2"] },
+    { "key": "ts", "label": "TS", "disable": ["a_ts7", "a_ts6", "a_ts5", "a_ts4", "a_ts3", "a_ts2", "a_ts1", "akhir", "lulus"] }
+   ],
+   "columns": [
+    { "key": "a_ts7", "label": "awal TS-7", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "a_ts6", "label": "awal TS-6", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "a_ts5", "label": "awal TS-5", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "a_ts4", "label": "awal TS-4", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "a_ts3", "label": "awal TS-3", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "a_ts2", "label": "awal TS-2", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "a_ts1", "label": "awal TS-1", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 68 },
+    { "key": "akhir", "label": "Akhir TS", "num": true, "w": 76 },
+    { "key": "lulus", "label": "Jumlah Lulusan s.d. akhir TS", "num": true, "w": 118 }
+   ],
+   "cellTags": [
+    { "row": "ts7", "col": "a_ts7", "tag": "a1 =" },
+    { "row": "ts7", "col": "akhir", "tag": "b1 =" },
+    { "row": "ts7", "col": "lulus", "tag": "c1 =" }
+   ]
+  },
+  "L12": {
+   "mode": "fixed",
+   "firstCol": "Tahun Masuk",
+   "rows": [
+    { "key": "ts5", "label": "TS-5" },
+    { "key": "ts4", "label": "TS-4", "disable": ["a_ts5"] },
+    { "key": "ts3", "label": "TS-3", "disable": ["a_ts5", "a_ts4"] },
+    { "key": "ts2", "label": "TS-2", "disable": ["a_ts5", "a_ts4", "a_ts3"] },
+    { "key": "ts1", "label": "TS-1", "disable": ["a_ts5", "a_ts4", "a_ts3", "a_ts2"] },
+    { "key": "ts", "label": "TS", "disable": ["a_ts5", "a_ts4", "a_ts3", "a_ts2", "a_ts1", "akhir", "lulus"] }
+   ],
+   "columns": [
+    { "key": "a_ts5", "label": "awal TS-5", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts4", "label": "awal TS-4", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts3", "label": "awal TS-3", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts2", "label": "awal TS-2", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "a_ts1", "label": "awal TS-1", "group": "Jumlah Mahasiswa per Angkatan pada Tahun*)", "num": true, "w": 72 },
+    { "key": "akhir", "label": "Akhir TS", "num": true, "w": 76 },
+    { "key": "lulus", "label": "Jumlah Lulusan s.d. akhir TS", "num": true, "w": 118 }
+   ],
+   "cellTags": [
+    { "row": "ts5", "col": "a_ts5", "tag": "a2 =" },
+    { "row": "ts5", "col": "akhir", "tag": "a2 =" },
+    { "row": "ts5", "col": "lulus", "tag": "a2 =" }
+   ]
+  },
+  "L13": {
+   "mode": "dynamic",
+   "minRows": 2,
+   "columns": [
+    { "key": "pendidikan", "label": "Pendidikan", "group": "Pengakuan Kompetensi Lulusan sesuai fokus diferensiasi misi PT", "w": 200 },
+    { "key": "penelitian", "label": "Penelitian", "group": "Pengakuan Kompetensi Lulusan sesuai fokus diferensiasi misi PT", "w": 200 },
+    { "key": "pkm", "label": "Pengabdian kepada Masyarakat", "group": "Pengakuan Kompetensi Lulusan sesuai fokus diferensiasi misi PT", "w": 200 }
+   ]
+  },
+  "L14": {
+   "mode": "fixed",
+   "firstCol": "Aspek Penilaian",
+   "rows": [
+    { "key": "etika", "label": "Etika" },
+    { "key": "keahlian", "label": "Keahlian pada bidang ilmu (kompetensi utama)" },
+    { "key": "bing", "label": "Kemampuan berbahasa asing" },
+    { "key": "ti", "label": "Penggunaan teknologi informasi" },
+    { "key": "kom", "label": "Kemampuan berkomunikasi" },
+    { "key": "kerja", "label": "Kerjasama" },
+    { "key": "diri", "label": "Pengembangan diri" }
+   ],
+   "columns": [
+    { "key": "sb", "label": "Sangat Baik", "group": "Hasil Penilaian (%)", "num": true, "w": 78 },
+    { "key": "b", "label": "Baik", "group": "Hasil Penilaian (%)", "num": true, "w": 68 },
+    { "key": "c", "label": "Cukup", "group": "Hasil Penilaian (%)", "num": true, "w": 68 },
+    { "key": "kb", "label": "Kurang", "group": "Hasil Penilaian (%)", "num": true, "w": 70 }
+   ]
+  },
+  "L15": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "kode", "label": "Kode Program Studi", "w": 100 },
+    { "key": "nama", "label": "Nama Program Studi", "w": 150 },
+    { "key": "jenjang", "label": "Jenjang Program Studi", "w": 88 },
+    { "key": "ts4", "label": "TS-4", "group": "Jumlah mahasiswa baru pada saat TS-n", "num": true, "w": 62 },
+    { "key": "ts3", "label": "TS-3", "group": "Jumlah mahasiswa baru pada saat TS-n", "num": true, "w": 62 },
+    { "key": "ts2", "label": "TS-2", "group": "Jumlah mahasiswa baru pada saat TS-n", "num": true, "w": 62 },
+    { "key": "ts1", "label": "TS-1", "group": "Jumlah mahasiswa baru pada saat TS-n", "num": true, "w": 62 },
+    { "key": "ts", "label": "TS", "group": "Jumlah mahasiswa baru pada saat TS-n", "num": true, "w": 62 },
+    { "key": "pct", "label": "Persentase Penurunan mahasiswa", "num": true, "w": 122 }
+   ]
+  },
+  "L16": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "nama", "label": "Nama Kegiatan", "w": 170 },
+    { "key": "waktu", "label": "Waktu Penyelenggaraan", "w": 112 },
+    { "key": "prov", "label": "Provinsi/ Wilayah", "group": "Tingkat*)", "w": 88 },
+    { "key": "nas", "label": "Nasional", "group": "Tingkat*)", "w": 76 },
+    { "key": "intl", "label": "Internasional", "group": "Tingkat*)", "w": 90 },
+    { "key": "prestasi", "label": "Prestasi yang Dicapai", "w": 122 }
+   ],
+   "footer": { "label": "", "labelSpan": 3, "cells": { "prov": "NA1 =", "nas": "NB1 =", "intl": "NC1 =" } }
+  },
+  "L17": {
+   "mode": "fixed",
+   "firstCol": "Program Pendidikan",
+   "rows": [
+    { "key": "dok", "label": "Doktor/ Doktor Terapan/ Subspesialis" },
+    { "key": "mgt", "label": "Magister/ Magister Terapan/ Spesialis" },
+    { "key": "prof", "label": "Profesi" },
+    { "key": "sarjana", "label": "Sarjana/ Sarjana Terapan" },
+    { "key": "d3", "label": "Diploma Tiga" },
+    { "key": "d2", "label": "Diploma Dua" },
+    { "key": "d1", "label": "Diploma Satu" }
+   ],
+   "columns": [
+    { "key": "ts3", "label": "TS-3", "group": "Rata-rata Masa Tunggu Lulusan (bulan)", "num": true, "w": 76 },
+    { "key": "ts2", "label": "TS-2", "group": "Rata-rata Masa Tunggu Lulusan (bulan)", "num": true, "w": 76 },
+    { "key": "ts1", "label": "TS-1", "group": "Rata-rata Masa Tunggu Lulusan (bulan)", "num": true, "w": 76 }
+   ]
+  },
+  "L18": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "picker": {
+    "key": "bidang",
+    "label": "Pilihan Diferensiasi Misi (lengkapi salah satu)",
+    "options": ["a) Pendidikan", "b) Penelitian", "c) Pengabdian kepada Masyarakat"]
+   },
+   "columns": [
+    { "key": "bentuk", "label": "Bentuk Pengakuan Kompetensi Lulusan sesuai Renstra Perguruan Tinggi (Lokal/Nasional/Internasional)", "w": 240 },
+    { "key": "target", "label": "Target", "w": 140 },
+    { "key": "capaian", "label": "Capaian", "w": 140 },
+    { "key": "bukti", "label": "Bukti Capaian", "w": 160 }
+   ]
+  },
+  "L19": {
+   "mode": "fixed",
+   "firstCol": "Jenis Publikasi",
+   "tagCol": "jumlah",
+   "rows": [
+    { "key": "na1", "label": "Jurnal nasional tidak terakreditasi", "tag": "NA1 =" },
+    { "key": "na2", "label": "Jurnal nasional terakreditasi", "tag": "NA2 =" },
+    { "key": "na3", "label": "Jurnal internasional", "tag": "NA3 =" },
+    { "key": "na4", "label": "Jurnal internasional bereputasi", "tag": "NA4 =" },
+    { "key": "nb1", "label": "Seminar wilayah/lokal/perguruan tinggi", "tag": "NB1 =" },
+    { "key": "nb2", "label": "Seminar nasional", "tag": "NB2 =" },
+    { "key": "nb3", "label": "Seminar internasional", "tag": "NB3 =" },
+    { "key": "nc1", "label": "Tulisan di media massa nasional", "tag": "NC1 =" },
+    { "key": "nc2", "label": "Tulisan di media massa internasional", "tag": "NC2 =" }
+   ],
+   "columns": [
+    { "key": "ts2", "label": "TS-2", "group": "Jumlah Judul", "num": true, "w": 66 },
+    { "key": "ts1", "label": "TS-1", "group": "Jumlah Judul", "num": true, "w": 66 },
+    { "key": "ts", "label": "TS", "group": "Jumlah Judul", "num": true, "w": 66 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 96 }
+   ],
+   "footer": { "label": "Jumlah", "labelSpan": 2, "cells": {} }
+  },
+  "L20": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "nama", "label": "Nama Dosen", "w": 150 },
+    { "key": "bidang", "label": "Bidang Keahlian", "w": 132 },
+    { "key": "rek", "label": "Rekognisi dan Bukti Pendukung", "w": 210 },
+    { "key": "wil", "label": "Wilayah", "group": "Tingkat", "w": 72 },
+    { "key": "nas", "label": "Nasional", "group": "Tingkat", "w": 74 },
+    { "key": "intl", "label": "Internasional", "group": "Tingkat", "w": 88 },
+    { "key": "tahun", "label": "Tahun", "w": 72 }
+   ]
+  },
+  "L21": {
+   "mode": "fixed",
+   "firstCol": "Nama Produk/Jasa",
+   "tagCol": "jumlah",
+   "rows": [
+    { "key": "paten", "label": "Paten", "tag": "NPT =" },
+    { "key": "paten_s", "label": "Paten Sederhana", "tag": "NPS =" },
+    { "key": "merek", "label": "Merek", "tag": "NMR =" },
+    { "key": "ig", "label": "Indikasi Geografis", "tag": "NIG =" },
+    { "key": "di", "label": "Desain Industri", "tag": "NDI =" },
+    { "key": "dtls", "label": "Desain Tata Letak Sirkuit", "tag": "NDS =" },
+    { "key": "rd", "label": "Rahasia Dagang", "tag": "NRD =" },
+    { "key": "pvt", "label": "Perlindungan Varietas Tanaman", "tag": "NVT =" },
+    { "key": "hc", "label": "Hak Cipta", "tag": "NHC =" }
+   ],
+   "columns": [
+    { "key": "ts2", "label": "TS-2", "group": "Jumlah Produk/Jasa", "num": true, "w": 66 },
+    { "key": "ts1", "label": "TS-1", "group": "Jumlah Produk/Jasa", "num": true, "w": 66 },
+    { "key": "ts", "label": "TS", "group": "Jumlah Produk/Jasa", "num": true, "w": 66 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 96 }
+   ]
+  },
+  "L22": {
+   "mode": "fixed",
+   "firstCol": "Nama Produk/Jasa",
+   "tagCol": "jumlah",
+   "rows": [
+    { "key": "paten", "label": "Paten", "tag": "NPT =" },
+    { "key": "paten_s", "label": "Paten Sederhana", "tag": "NPS =" },
+    { "key": "merek", "label": "Merek", "tag": "NMR =" },
+    { "key": "ig", "label": "Indikasi Geografis", "tag": "NIG =" },
+    { "key": "di", "label": "Desain Industri", "tag": "NDI =" },
+    { "key": "dtls", "label": "Desain Tata Letak Sirkuit", "tag": "NDS =" },
+    { "key": "rd", "label": "Rahasia Dagang", "tag": "NRD =" },
+    { "key": "pvt", "label": "Perlindungan Varietas Tanaman", "tag": "NVT =" },
+    { "key": "hc", "label": "Hak Cipta", "tag": "NHC =" }
+   ],
+   "columns": [
+    { "key": "ts2", "label": "TS-2", "group": "Jumlah Produk/Jasa", "num": true, "w": 66 },
+    { "key": "ts1", "label": "TS-1", "group": "Jumlah Produk/Jasa", "num": true, "w": 66 },
+    { "key": "ts", "label": "TS", "group": "Jumlah Produk/Jasa", "num": true, "w": 66 },
+    { "key": "jumlah", "label": "Jumlah", "num": true, "w": 96 }
+   ]
+  },
+  "L23": {
+   "mode": "fixed",
+   "firstCol": "Stakeholder",
+   "rows": [
+    { "key": "mhs", "label": "Mahasiswa" },
+    { "key": "dosen", "label": "Dosen" },
+    { "key": "tendik", "label": "Tenaga Kependidikan" },
+    { "key": "mitra", "label": "Mitra" },
+    { "key": "lulusan", "label": "Lulusan" },
+    { "key": "pengguna", "label": "Pengguna Lulusan" },
+    { "key": "lainnya", "label": "Lainnya" }
+   ],
+   "columns": [
+    { "key": "i_ada", "label": "Ada", "group": "Instrumen", "w": 58 },
+    { "key": "i_tidak", "label": "Tidak Ada", "group": "Instrumen", "w": 66 },
+    { "key": "r_ts2", "label": "TS-2", "group": "Jumlah Responden", "num": true, "w": 64 },
+    { "key": "r_ts1", "label": "TS-1", "group": "Jumlah Responden", "num": true, "w": 64 },
+    { "key": "r_ts", "label": "TS", "group": "Jumlah Responden", "num": true, "w": 64 },
+    { "key": "k_ts2", "label": "TS-2", "group": "Persentase keterwakilan responden", "num": true, "w": 72 },
+    { "key": "k_ts1", "label": "TS-1", "group": "Persentase keterwakilan responden", "num": true, "w": 72 },
+    { "key": "k_ts", "label": "TS", "group": "Persentase keterwakilan responden", "num": true, "w": 72 },
+    { "key": "sb", "label": "SB", "group": "Persentase yang menjawab layanan (SB=sangat baik, B=baik, C=cukup, KB=kurang baik)", "num": true, "w": 56 },
+    { "key": "b", "label": "B", "group": "Persentase yang menjawab layanan (SB=sangat baik, B=baik, C=cukup, KB=kurang baik)", "num": true, "w": 56 },
+    { "key": "c", "label": "C", "group": "Persentase yang menjawab layanan (SB=sangat baik, B=baik, C=cukup, KB=kurang baik)", "num": true, "w": 56 },
+    { "key": "kb", "label": "KB", "group": "Persentase yang menjawab layanan (SB=sangat baik, B=baik, C=cukup, KB=kurang baik)", "num": true, "w": 56 },
+    { "key": "tl", "label": "Tindak Lanjut Hasil Pengukuran Kepuasan", "w": 152 }
+   ]
+  },
+  "L24": {
+   "mode": "dynamic",
+   "minRows": 3,
+   "columns": [
+    { "key": "lembaga", "label": "Lembaga Audit", "w": 190 },
+    { "key": "tahun", "label": "Tahun", "w": 72 },
+    { "key": "opini", "label": "Opini", "w": 130 },
+    { "key": "ket", "label": "Keterangan", "w": 180 }
+   ]
+  }
+ },
  "NASKAH": [
   [
    "N01",

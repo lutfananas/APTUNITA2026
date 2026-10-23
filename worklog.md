@@ -218,3 +218,24 @@ Stage Summary:
 - Deliverable terbarui: download/Rapat-Persiapan-Akreditasi_UNITA-ButirUnggul-IAPT41-23Okt2026.pptx + .pdf
 - Seluruh deck kini memakai diksi akademis: "indikator" (judul/header), "butir" (aturan emas), "tonggak" (badge fase unggah)
 - Sumber HTML download/slides/slide_01..18.html konsisten dengan manifest slides_brief.json
+
+---
+Task ID: 11
+Agent: main
+Task: Tab LKPT — samakan kolom isian tiap tabel dengan format resmi Panduan Penyusunan LKPT (Lampiran 4b PerBAN-PT 35/2025, IAPT 4.1) dari PDF unggahan user
+
+Work Log:
+- Baca PDF panduan per halaman (hal 7-18): konfirmasi layout persis Tabel 1, II-1.A.1-A.4, Tabel 23, II-1.A.3, II-1.C.1-C.6, II-1.D.2-D.4, II-2.C.2, Tabel 21, 22a/b, 24, 25
+- accreditation.json: tambah "LKPT_GRID" (24 spesifikasi) — header bergrup 2 tingkat, mode fixed/dynamic, sel abu (disable) pola diagonal tabel kelulusan, tag huruf resmi (d1/e1/f1, a1, a2), tag jumlah (NUnggul, NA, NPS, NDT, NA1-NC2, NPT-NHC), baris footer (Jumlah/Rata-rata/Total(4)/Total(6)), picker bidang (L18)
+- lib/accreditation.ts: tipe LkptCol/LkptRowDef/LkptGridSpec + export LKPT_GRID
+- store.tsx: LkptData + cells/rows/bidang (opsional, kompatibel data lama)
+- lkpt-grid.tsx (baru): render header bergrup (colSpan/rowSpan), baris fixed (label + tag), baris dynamic (tambah/hapus, default 3), input per sel dengan placeholder huruf resmi, tfoot, picker, catatan format
+- lkpt-tab.tsx: grid "Isian kolom tabel · format resmi Panduan Penyusunan LKPT (IAPT 4.1)" di atas field Status/Keterisian; ikut tersimpan via /api/save
+- globals.css: blok .lgrid (scroll horizontal, sel abu diagonal, angka rata kanan, tag mono)
+- Fix: insert JSON pertama menimpa penutup array LKPT -> diperbaiki, json.load VALID 24/24
+- Verifikasi: lint 0 error; agent-browser login ppmunita -> L01 isi Unggul S-1=1/Jumlah=1, A S-1=8/Jumlah=8 -> simpan -> reload -> nilai persist (footer NPS = tampil); L02 tambah baris 4 (02.01.02.01 / S1 Sistem Informasi) -> simpan -> reload -> 4 baris persist; L09 78 sel abu + placeholder d1 =; L23 header Instrumen(Ada/Tidak Ada)+Jumlah Responden+SB/B/C/KB; 13 tabel dynamic + 11 fixed = 24; 0 error console/server
+
+Stage Summary:
+- Seluruh 24 tabel LKPT kini punya grid isian dengan kolom PERSIS mengikuti Panduan Penyusunan LKPT IAPT 4.1 (data tersimpan di Entry JSON per tabel, audit log & izin kolaboratif LKPT tidak berubah)
+- Fixed 11: L01, L09-L12, L14, L17, L19, L21, L22, L23; Dynamic 13: L02-L08, L13, L15, L16, L18, L20, L24
+- Catatan: L12 memakai varian D3 (Tabel II-1.C.6 Diploma Tiga); varian D2/D1 tertulis di deskripsi kolom

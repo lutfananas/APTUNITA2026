@@ -7,9 +7,10 @@
  */
 import React, { useMemo, useState } from 'react'
 import { useStore } from './store'
-import { LKPT } from '@/lib/accreditation'
+import { LKPT, LKPT_GRID } from '@/lib/accreditation'
 import type { LkptData } from './store'
 import { FieldHint, FieldLabel, LinkEditor, SaveBar, StatusPill, ST_LKPT_OPTIONS, cleanLinks } from './ui-bits'
+import { LkptGrid } from './lkpt-grid'
 
 export function LkptTab() {
   const { data } = useStore()
@@ -53,6 +54,7 @@ export function LkptTab() {
 function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: string; tab: string; jud: string; ind: string; src: string; kolom: string; cat: string; open: boolean; onToggle: () => void }) {
   const { data, save, canWrite } = useStore()
   const stored = data.lkpt[id] || {}
+  const spec = LKPT_GRID[id]
   const rw = canWrite('lkpt', id)
   const [d, setD] = useState<LkptData>({
     status: stored.status || 'Belum mulai',
@@ -60,6 +62,9 @@ function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: s
     file_url: stored.file_url || '',
     catatan: stored.catatan || '',
     bukti: cleanLinks(stored.bukti),
+    cells: stored.cells || {},
+    rows: stored.rows || [],
+    bidang: stored.bidang || '',
   })
   const [dirty, setDirty] = useState(false)
   const mut = (p: Partial<LkptData>) => {
@@ -114,6 +119,21 @@ function LkptRow({ id, tab, jud, ind, src, kolom, cat, open, onToggle }: { id: s
           </div>
         </div>
         <div className="fill">
+          {spec && (
+            <div className="field">
+              <FieldLabel>Isian kolom tabel · format resmi Panduan Penyusunan LKPT (IAPT 4.1)</FieldLabel>
+              <LkptGrid
+                spec={spec}
+                cells={d.cells || {}}
+                rows={d.rows || []}
+                bidang={d.bidang || ''}
+                disabled={!rw}
+                onCells={c => mut({ cells: c })}
+                onRows={r => mut({ rows: r })}
+                onBidang={b => mut({ bidang: b })}
+              />
+            </div>
+          )}
           <div className="row2" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <label className="field">
               <FieldLabel>Status</FieldLabel>
